@@ -10,8 +10,7 @@ public class GameManager : MonoBehaviour
     [Header("Input Setup")]
     [SerializeField] private VariableJoystick joystick;
     
-    
-    public VariableJoystick Joystick { get; private set; }
+    public VariableJoystick Joystick => joystick;
 
     private void Awake()
     {
