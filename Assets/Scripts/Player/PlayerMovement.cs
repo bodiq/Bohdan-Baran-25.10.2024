@@ -6,11 +6,15 @@ namespace Player
     public class PlayerMovement : MonoBehaviour
     {
         [SerializeField] private float moveSpeed;
+        
+        [SerializeField] private Animator animator;
 
         private Joystick inputJoystick;
         private CharacterController characterController;
 
         private Vector3 moveDirection = Vector3.zero;
+
+        private const string AnimationSpeedParameterName = "Speed";
 
         private void Start()
         {
@@ -23,6 +27,7 @@ namespace Player
             if (inputJoystick != null)
             {
                 moveDirection = Vector3.forward * inputJoystick.Vertical + Vector3.right * inputJoystick.Horizontal;
+                animator.SetFloat(AnimationSpeedParameterName, moveDirection.magnitude);
             }
 
             var movement = moveDirection.normalized * (moveSpeed * Time.deltaTime);
