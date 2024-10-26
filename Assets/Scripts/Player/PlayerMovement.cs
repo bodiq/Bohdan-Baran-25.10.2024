@@ -7,7 +7,7 @@ namespace Player
     {
         [SerializeField] private float moveSpeed;
 
-        private VariableJoystick inputJoystick;
+        private Joystick inputJoystick;
         private CharacterController characterController;
 
         private Vector3 moveDirection = Vector3.zero;
@@ -25,9 +25,14 @@ namespace Player
                 moveDirection = Vector3.forward * inputJoystick.Vertical + Vector3.right * inputJoystick.Horizontal;
             }
 
-            var movement = moveDirection * (moveSpeed * Time.deltaTime);
+            var movement = moveDirection.normalized * (moveSpeed * Time.deltaTime);
 
             characterController.Move(movement);
+
+            if (moveDirection != Vector3.zero)
+            {
+                transform.rotation = Quaternion.LookRotation(moveDirection);
+            }
         }
     }
 }

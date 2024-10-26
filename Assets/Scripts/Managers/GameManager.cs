@@ -8,9 +8,9 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
     
     [Header("Input Setup")]
-    [SerializeField] private VariableJoystick joystick;
+    [SerializeField] private Joystick joystick;
     
-    public VariableJoystick Joystick => joystick;
+    public Joystick Joystick => joystick;
 
     private void Awake()
     {
