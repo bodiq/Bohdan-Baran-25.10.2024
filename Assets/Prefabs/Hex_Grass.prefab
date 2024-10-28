@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 297184782076416337}
+  - component: {fileID: 2798937259682695843}
   m_Layer: 0
   m_Name: Hex_Grass
   m_TagString: Untagged
@@ -34,6 +35,21 @@ Transform:
   - {fileID: 7510062648477444093}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2798937259682695843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1104542239266261995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db9b34f19544aad4d99b64b5daab3aff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextTileUnlock: {fileID: 0}
+  indicator: {fileID: 4370211815128296648}
+  indicatorParent: {fileID: 7510062648477444093}
 --- !u!1 &3104003037218875521
 GameObject:
   m_ObjectHideFlags: 0
@@ -268,6 +284,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe87c248c00f451479409176c8545c5f, type: 3}
+--- !u!114 &4370211815128296648 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4091955459735011548, guid: fe87c248c00f451479409176c8545c5f,
+    type: 3}
+  m_PrefabInstance: {fileID: 319640892276616212}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b06d7f109f8fedd41a475e3d0b622dd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &7510062648477444093 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7806582597818731497, guid: fe87c248c00f451479409176c8545c5f,
