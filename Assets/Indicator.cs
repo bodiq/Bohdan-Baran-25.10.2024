@@ -6,19 +6,30 @@ using UnityEngine;
 
 public class Indicator : MonoBehaviour
 {
-    private Tile tile;
+    private Tile nextTileToOpen;
+    private Tile myTile;
 
     private void Start()
     {
-        tile = GetComponentInParent<Tile>();
+        myTile = GetComponentInParent<Tile>();
+
+        if (myTile != null)
+        {
+            nextTileToOpen = myTile.NearTiles[gameObject.transform.GetSiblingIndex()];
+            if (nextTileToOpen == null)
+            {
+                gameObject.SetActive(false);
+                myTile.MyIndicators.Remove(this);
+            }
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (tile != null)
-        {
-            tile.UnlockNextTile();
-            gameObject.SetActive(false);
-        }
+        
     }
 }
