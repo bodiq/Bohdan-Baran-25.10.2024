@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Map;
@@ -31,12 +32,14 @@ namespace Managers
             {
                 Instance = this;
             }
+            
+            GenerateHexTiles();
+            SetTileDependencies();
         }
 
         private void Start()
         {
-            GenerateHexTiles();
-            SetTileDependencies();
+            UnlockTile(tiles[0, 0]);
         }
 
         private void GenerateHexTiles()
@@ -77,6 +80,8 @@ namespace Managers
                     tile.neighbours[3] = GetNeighbour(i, j + 1, j < columnsMap - 1); // Правий
                     tile.neighbours[4] = GetNeighbour(i + 1, j - (i % 2 == 0 ? 1 : 0), j > 0 || i % 2 == 1); // Верхній лівий
                     tile.neighbours[5] = GetNeighbour(i + 1, j + (i % 2 == 1 ? 1 : 0), j < columnsMap - 1 || i % 2 == 0); // Верхній правий
+                    
+                    //tile.gameObject.SetActive(true);
                 }
             }
         }

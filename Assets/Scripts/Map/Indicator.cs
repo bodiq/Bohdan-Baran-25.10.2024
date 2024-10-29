@@ -10,17 +10,19 @@ public class Indicator : MonoBehaviour
     private Tile nextTileToOpen;
     private Tile myTile;
 
+    public Tile NextTileToOpen => nextTileToOpen;
+
     private void Start()
     {
         myTile = GetComponentInParent<Tile>();
 
         if (myTile != null)
         {
-            //nextTileToOpen = myTile.NearTiles[gameObject.transform.GetSiblingIndex()];
-            if (nextTileToOpen == null)
+            nextTileToOpen = myTile.neighbours[gameObject.transform.GetSiblingIndex()];
+            if (nextTileToOpen == null || nextTileToOpen.IsTileUnlocked)
             {
                 gameObject.SetActive(false);
-                myTile.MyIndicators.Remove(this);
+                myTile.AvailableIndicators.Remove(this);
             }
         }
         else
@@ -36,8 +38,8 @@ public class Indicator : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        /*TileManager.Instance.UnlockTile(nextTileToOpen);
+        TileManager.Instance.UnlockTile(nextTileToOpen);
         gameObject.SetActive(false);
-        myTile.MyIndicators.Remove(this);*/
+        myTile.AvailableIndicators.Remove(this);
     }
 }
