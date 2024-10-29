@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Managers;
 using Map;
 using UnityEngine;
 
@@ -28,8 +29,15 @@ public class Indicator : MonoBehaviour
         }
     }
 
+    public bool CheckTileActive()
+    {
+        return nextTileToOpen.gameObject.activeSelf;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        
+        TileManager.Instance.UnlockTile(nextTileToOpen);
+        gameObject.SetActive(false);
+        myTile.MyIndicators.Remove(this);
     }
 }

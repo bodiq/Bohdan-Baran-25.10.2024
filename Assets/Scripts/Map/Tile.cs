@@ -11,11 +11,11 @@ namespace Map
         public List<Tile> NearTiles => tilesNear;
         public List<Indicator> MyIndicators => indicators;
 
-        private readonly Vector3 startTileYPos = new(0f, 3f, 0f);
+        private readonly Vector3 startTileYPos = new(0f, 0f, 0f);
         
-        public void UnlockNextTile(int index)
+        public void OpenTile()
         {
-            tilesNear[index].transform.position += startTileYPos;
+            gameObject.transform.position += startTileYPos;
         }
     }
 }

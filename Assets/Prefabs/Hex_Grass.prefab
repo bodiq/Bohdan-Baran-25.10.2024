@@ -49,9 +49,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilesNear: []
   indicators:
+  - {fileID: 9144882923096646247}
   - {fileID: 5807675798298337534}
   - {fileID: 3980570812922415451}
-  - {fileID: 9144882923096646247}
 --- !u!1 &3104003037218875521
 GameObject:
   m_ObjectHideFlags: 0
