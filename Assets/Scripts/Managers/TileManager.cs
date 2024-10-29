@@ -36,6 +36,7 @@ namespace Managers
         private void Start()
         {
             GenerateHexTiles();
+            SetTileDependencies();
         }
 
         private void GenerateHexTiles()
@@ -47,8 +48,8 @@ namespace Managers
                 for (var j = 0; j < columnsMap; j++)
                 {
                     
-                    var xOffset = j * tileSize * VerticalDistance; 
-                    var zOffset = i * tileSize * CoefficientPlacement;   
+                    var xOffset = j * tileSize * CoefficientPlacement; 
+                    var zOffset = i * tileSize * VerticalDistance;   
                     
                     if (i % 2 == 1)
                     {
@@ -60,6 +61,29 @@ namespace Managers
                     tiles[i, j] = tile;
                 }
             }
+        }
+        
+        void SetTileDependencies()
+        {
+            for (var i = 0; i < rowsMap; i++)
+            {
+                for (var j = 0; j < columnsMap; j++)
+                {
+                    var tile = tiles[i, j];
+
+                    tile.neighbours[0] = GetNeighbour(i - 1, j - (i % 2 == 0 ? 1 : 0), j > 0 || i % 2 == 1); // Нижній лівий
+                    tile.neighbours[1] = GetNeighbour(i - 1, j + (i % 2 == 1 ? 1 : 0), j < columnsMap - 1 || i % 2 == 0); // Нижній правий
+                    tile.neighbours[2] = GetNeighbour(i, j - 1, j > 0); // Лівий
+                    tile.neighbours[3] = GetNeighbour(i, j + 1, j < columnsMap - 1); // Правий
+                    tile.neighbours[4] = GetNeighbour(i + 1, j - (i % 2 == 0 ? 1 : 0), j > 0 || i % 2 == 1); // Верхній лівий
+                    tile.neighbours[5] = GetNeighbour(i + 1, j + (i % 2 == 1 ? 1 : 0), j < columnsMap - 1 || i % 2 == 0); // Верхній правий
+                }
+            }
+        }
+
+        private Tile GetNeighbour(int i, int j, bool condition)
+        {
+            return condition && i >= 0 && i < rowsMap && j >= 0 && j < columnsMap ? tiles[i, j] : null;
         }
 
         public void UnlockTile(Tile tile)

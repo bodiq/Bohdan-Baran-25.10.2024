@@ -16,7 +16,7 @@ public class Indicator : MonoBehaviour
 
         if (myTile != null)
         {
-            nextTileToOpen = myTile.NearTiles[gameObject.transform.GetSiblingIndex()];
+            //nextTileToOpen = myTile.NearTiles[gameObject.transform.GetSiblingIndex()];
             if (nextTileToOpen == null)
             {
                 gameObject.SetActive(false);
