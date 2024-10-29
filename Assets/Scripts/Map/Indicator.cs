@@ -36,8 +36,8 @@ public class Indicator : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        TileManager.Instance.UnlockTile(nextTileToOpen);
+        /*TileManager.Instance.UnlockTile(nextTileToOpen);
         gameObject.SetActive(false);
-        myTile.MyIndicators.Remove(this);
+        myTile.MyIndicators.Remove(this);*/
     }
 }

@@ -47,7 +47,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db9b34f19544aad4d99b64b5daab3aff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tilesNear: []
+  tilesNear:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   indicators:
   - {fileID: 9144882923096646247}
   - {fileID: 5807675798298337534}

@@ -8,6 +8,8 @@ namespace Map
         [SerializeField] private List<Tile> tilesNear;
         [SerializeField] private List<Indicator> indicators;
 
+        private bool isUnlocked = false;
+
         public List<Tile> NearTiles => tilesNear;
         public List<Indicator> MyIndicators => indicators;
 
