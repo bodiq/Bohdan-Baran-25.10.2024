@@ -22,6 +22,8 @@ namespace Managers
         private const float TileXOffsetOddRow = 0.25f;
         private const float HalfUnit = 0.5f;
 
+        private List<Tile> openTiles = new ();
+
         private void Awake()
         {
             if (Instance != null && Instance != this)
@@ -34,11 +36,11 @@ namespace Managers
             }
             
             GenerateHexTiles();
-            SetTileDependencies();
         }
 
         private void Start()
         {
+            SetTileDependencies();
             UnlockTile(tiles[0, 0]);
         }
 
@@ -65,8 +67,8 @@ namespace Managers
                 }
             }
         }
-        
-        void SetTileDependencies()
+
+        private void SetTileDependencies()
         {
             for (var i = 0; i < rowsMap; i++)
             {
@@ -81,7 +83,12 @@ namespace Managers
                     tile.neighbours[4] = GetNeighbour(i + 1, j - (i % 2 == 0 ? 1 : 0), j > 0 || i % 2 == 1); // Верхній лівий
                     tile.neighbours[5] = GetNeighbour(i + 1, j + (i % 2 == 1 ? 1 : 0), j < columnsMap - 1 || i % 2 == 0); // Верхній правий
                     
-                    //tile.gameObject.SetActive(true);
+                    tile.gameObject.SetActive(false);
+                    
+                    foreach (var tileAvailableIndicator in tile.AvailableIndicators)
+                    {
+                        tileAvailableIndicator.SetIndicatorDependence(tile);
+                    }
                 }
             }
         }
@@ -99,6 +106,7 @@ namespace Managers
             }
             else
             {
+                openTiles.Add(tile);
                 tile.gameObject.SetActive(true);
                 tile.OpenTile();
             }

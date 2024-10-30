@@ -11,10 +11,11 @@ public class Indicator : MonoBehaviour
     private Tile myTile;
 
     public Tile NextTileToOpen => nextTileToOpen;
-
-    private void Start()
+    
+    public void SetIndicatorDependence(Tile tile)
     {
-        myTile = GetComponentInParent<Tile>();
+        myTile = tile;
+        
 
         if (myTile != null)
         {
@@ -22,7 +23,7 @@ public class Indicator : MonoBehaviour
             if (nextTileToOpen == null || nextTileToOpen.IsTileUnlocked)
             {
                 gameObject.SetActive(false);
-                myTile.AvailableIndicators.Remove(this);
+                //myTile.AvailableIndicators.Remove(this);
             }
         }
         else
@@ -39,7 +40,7 @@ public class Indicator : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         TileManager.Instance.UnlockTile(nextTileToOpen);
-        gameObject.SetActive(false);
         myTile.AvailableIndicators.Remove(this);
+        gameObject.SetActive(false);
     }
 }
