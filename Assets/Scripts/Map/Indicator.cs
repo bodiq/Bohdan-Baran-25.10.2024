@@ -16,7 +16,6 @@ public class Indicator : MonoBehaviour
     {
         myTile = tile;
         
-
         if (myTile != null)
         {
             nextTileToOpen = myTile.neighbours[gameObject.transform.GetSiblingIndex()];
@@ -32,6 +31,15 @@ public class Indicator : MonoBehaviour
         }
     }
 
+    public void ActivateIndicator()
+    {
+        var position = transform.position;
+        position = new Vector3(position.x, 0f, position.z);
+        transform.position = position;
+        myTile.IsTileUnlocked = true;
+        nextTileToOpen.IsTileReserved = true;
+    }
+
     public bool CheckTileActive()
     {
         return nextTileToOpen.gameObject.activeSelf;
@@ -40,7 +48,7 @@ public class Indicator : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         TileManager.Instance.UnlockTile(nextTileToOpen);
-        myTile.AvailableIndicators.Remove(this);
+        //myTile.AvailableIndicators.Remove(this);
         gameObject.SetActive(false);
     }
 }

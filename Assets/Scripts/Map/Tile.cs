@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Managers;
 using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -15,7 +16,12 @@ namespace Map
         private bool isUnlocked = false;
         private bool isReserved = false;
         public List<Indicator> AvailableIndicators => indicators;
-        public bool IsTileUnlocked => isUnlocked;
+        public bool IsTileUnlocked
+        {
+            get => isUnlocked;
+            set => isUnlocked = value;
+        }
+
         public bool IsTileReserved
         {
             get => isReserved;
@@ -34,24 +40,20 @@ namespace Map
                 return;
             }
 
-            var indicator = GetFirstAvailableIndicator();
+            var indicator = GetRandomAvailableIndicator();
 
             if (indicator != null)
             {
-                var position = indicator.transform.position;
-                position = new Vector3(position.x, 0f, position.z);
-                indicator.transform.position = position;
-                isUnlocked = true;
-                indicator.NextTileToOpen.IsTileReserved = true;
-                AvailableIndicators.Remove(indicator);
+                indicator.ActivateIndicator();
             }
             else
             {
                 Debug.LogError("No indicators available on tile, null");
+                TileManager.Instance.UnlockRandomOpenTileIndicator();
             }
         }
 
-        private Indicator GetFirstAvailableIndicator()
+        private Indicator GetRandomAvailableIndicator()
         {
             var validIndicators = AvailableIndicators.Where(indicator => indicator.NextTileToOpen != null && !indicator.NextTileToOpen.IsTileUnlocked && !indicator.NextTileToOpen.IsTileReserved).ToList();
 

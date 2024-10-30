@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Map;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Managers
 {
@@ -109,6 +110,28 @@ namespace Managers
                 openTiles.Add(tile);
                 tile.gameObject.SetActive(true);
                 tile.OpenTile();
+                if (openTiles.Count % 2 == 0 && openTiles.Count > 4)
+                {
+                    UnlockRandomOpenTileIndicator();
+                }
+            }
+        }
+
+        public void UnlockRandomOpenTileIndicator()
+        {
+            var availableIndicators = openTiles.SelectMany(tile => tile.AvailableIndicators.Where(
+                indicator => indicator.NextTileToOpen != null 
+            && !indicator.NextTileToOpen.IsTileReserved 
+            && !indicator.NextTileToOpen.IsTileUnlocked)).ToList();
+
+            if (availableIndicators.Count > 0)
+            {
+                var indicator = availableIndicators[Random.Range(0, availableIndicators.Count)];
+                indicator.ActivateIndicator();
+            }
+            else
+            {
+                Debug.LogError("All tiles are opened");
             }
         }
     }
