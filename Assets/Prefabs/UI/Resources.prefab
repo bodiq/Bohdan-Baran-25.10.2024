@@ -301,6 +301,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b655f016e72e9b4b9ca338d9a1b17c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  resourcesEarnedText: {fileID: 8218496938391783282}
+  resourcesToGoText: {fileID: 3546643544102969013}
+  resourceImage: {fileID: 3898611986961642962}
+  resourcesInformation: {fileID: 11400000, guid: ab4076f7acb8588448d49b7ddea75886,
+    type: 2}
 --- !u!1 &4455034672249431403
 GameObject:
   m_ObjectHideFlags: 0
