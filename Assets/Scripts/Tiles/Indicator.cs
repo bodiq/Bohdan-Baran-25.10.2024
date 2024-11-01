@@ -59,15 +59,16 @@ namespace Tiles
             {
                 _collectingCoroutine = StartCoroutine(CollectResource());
             }
-            /*TileManager.Instance.UnlockTile(nextTileToOpen);
-            gameObject.SetActive(false);*/
         }
 
         private void OnTriggerExit(Collider other)
         {
             _isCollecting = false;
-            StopCoroutine(_collectingCoroutine);
-            _collectingCoroutine = null;
+            if (_collectingCoroutine != null)
+            {
+                StopCoroutine(_collectingCoroutine);
+                _collectingCoroutine = null;
+            }
         }
 
         private IEnumerator CollectResource()
@@ -76,15 +77,16 @@ namespace Tiles
 
             while (!nextTileToOpen.ResourcesIndicatorManager.CheckIfResourceIndicatorsAreFull())
             {
-                var amountToIncresed = Mathf.CeilToInt(0.2f * Time.deltaTime);
-                
                 foreach (var activeResourceIndicator in nextTileToOpen.ResourcesIndicatorManager._activeResourceIndicators)
                 {
-                    activeResourceIndicator.Value.IncreaseResourceAmount(amountToIncresed);
+                    activeResourceIndicator.Value.IncreaseResourceAmount();
                 }
 
                 yield return null;
             }
+            
+            TileManager.Instance.UnlockTile(nextTileToOpen);
+            gameObject.SetActive(false);
 
             _isCollecting = false;
         }

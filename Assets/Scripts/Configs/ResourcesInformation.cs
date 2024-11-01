@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Data;
 using Enums;
 using UnityEngine;
@@ -16,13 +17,10 @@ namespace Configs
         private void OnEnable()
         {
             resourcesInformation.Clear();
-        
-            foreach (var info in resourcesInfo)
+
+            foreach (var info in resourcesInfo.Where(info => !resourcesInformation.ContainsKey(info.resourceType)))
             {
-                if (!resourcesInformation.ContainsKey(info.resourceType))
-                {
-                    resourcesInformation.Add(info.resourceType, info.resourceSprite);
-                }
+                resourcesInformation.Add(info.resourceType, info.resourceSprite);
             }
         }
     }

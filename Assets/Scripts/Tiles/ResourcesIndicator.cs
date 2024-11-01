@@ -29,11 +29,11 @@ public class ResourcesIndicator : MonoBehaviour
         }
     }
 
-    public void IncreaseResourceAmount(int amountIncreased)
+    public void IncreaseResourceAmount()
     {
         if (!isFull)
         {
-            _resourcesEarned += amountIncreased;
+            _resourcesEarned += 1;
             resourcesEarnedText.text = _resourcesEarned.ToString();
             if (_resourcesEarned == _resourcesToEarn)
             {
