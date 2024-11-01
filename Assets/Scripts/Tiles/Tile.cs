@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Data;
 using Managers;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -10,11 +11,14 @@ namespace Tiles
     public class Tile : MonoBehaviour
     {
         [SerializeField] private List<Indicator> indicators;
+        [SerializeField] private ResourcesIndicatorManager resourcesIndicatorManager;
         [NonSerialized] public Tile[] neighbours = new Tile[6];
         
         private bool isUnlocked = false;
         private bool isReserved = false;
+
         public List<Indicator> AvailableIndicators => indicators;
+        public ResourcesIndicatorManager ResourcesIndicatorManager => resourcesIndicatorManager;
         public bool IsTileUnlocked
         {
             get => isUnlocked;
@@ -26,8 +30,6 @@ namespace Tiles
             get => isReserved;
             set => isReserved = value;
         }
-
-        private readonly Vector3 startTileYPos = new(0f, 0f, 0f);
 
         public void OpenTile()
         {

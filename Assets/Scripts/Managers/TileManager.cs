@@ -84,6 +84,7 @@ namespace Managers
                     tile.neighbours[4] = GetNeighbour(i + 1, j - (i % 2 == 0 ? 1 : 0), j > 0 || i % 2 == 1); // Верхній лівий
                     tile.neighbours[5] = GetNeighbour(i + 1, j + (i % 2 == 1 ? 1 : 0), j < columnsMap - 1 || i % 2 == 0); // Верхній правий
                     
+                    tile.ResourcesIndicatorManager.Initialize();
                     tile.gameObject.SetActive(false);
                     
                     foreach (var tileAvailableIndicator in tile.AvailableIndicators)
