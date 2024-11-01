@@ -13,6 +13,8 @@ namespace Managers
 
         private ResourceData[] resourceData;
 
+        [NonSerialized] public Dictionary<ResourceType, ResourcesIndicator> _activeResourceIndicators = new();
+
         private void SetRandomResourceCondition()
         {
             var arrayDataLenght = Random.Range(Constants.ResourceConstants.MinResourcesArrayLenght, Constants.ResourceConstants.MaxResourcesArrayLenght);
@@ -37,6 +39,19 @@ namespace Managers
             }
         }
 
+        public bool CheckIfResourceIndicatorsAreFull()
+        {
+            foreach (var indicator in _activeResourceIndicators)
+            {
+                if (!indicator.Value.IsFull)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         private ResourceType GetRandomResourceType(List<ResourceType> resourceTypes)
         {
             var randomIndex = Random.Range(0, resourceTypes.Count);
@@ -51,6 +66,7 @@ namespace Managers
             {
                 resourcesIndicators[i].gameObject.SetActive(true);
                 resourcesIndicators[i].Initialize(resourceData[i].CountToEarn, resourceData[i].ResourceType);
+                _activeResourceIndicators.Add(resourceData[i].ResourceType, resourcesIndicators[i]);
             }
             
             gameObject.SetActive(false);

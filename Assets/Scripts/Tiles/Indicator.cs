@@ -1,3 +1,6 @@
+using System;
+using System.Collections;
+using System.Linq;
 using Managers;
 using UnityEngine;
 
@@ -9,6 +12,10 @@ namespace Tiles
         private Tile myTile;
 
         public Tile NextTileToOpen => nextTileToOpen;
+
+        private bool _isCollecting = false;
+
+        private Coroutine _collectingCoroutine;
     
         public void SetIndicatorDependence(Tile tile)
         {
@@ -43,12 +50,43 @@ namespace Tiles
         {
             return nextTileToOpen.gameObject.activeSelf;
         }
+        
+        
 
         private void OnTriggerEnter(Collider other)
         {
-            TileManager.Instance.UnlockTile(nextTileToOpen);
-            //myTile.AvailableIndicators.Remove(this);
-            gameObject.SetActive(false);
+            if (!_isCollecting)
+            {
+                _collectingCoroutine = StartCoroutine(CollectResource());
+            }
+            /*TileManager.Instance.UnlockTile(nextTileToOpen);
+            gameObject.SetActive(false);*/
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            _isCollecting = false;
+            StopCoroutine(_collectingCoroutine);
+            _collectingCoroutine = null;
+        }
+
+        private IEnumerator CollectResource()
+        {
+            _isCollecting = true;
+
+            while (!nextTileToOpen.ResourcesIndicatorManager.CheckIfResourceIndicatorsAreFull())
+            {
+                var amountToIncresed = Mathf.CeilToInt(0.2f * Time.deltaTime);
+                
+                foreach (var activeResourceIndicator in nextTileToOpen.ResourcesIndicatorManager._activeResourceIndicators)
+                {
+                    activeResourceIndicator.Value.IncreaseResourceAmount(amountToIncresed);
+                }
+
+                yield return null;
+            }
+
+            _isCollecting = false;
         }
     }
 }

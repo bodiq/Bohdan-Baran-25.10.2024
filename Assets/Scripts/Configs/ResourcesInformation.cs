@@ -21,7 +21,7 @@ namespace Configs
             {
                 if (!resourcesInformation.ContainsKey(info.resourceType))
                 {
-                    resourcesInformation[info.resourceType] = info.resourceSprite;
+                    resourcesInformation.Add(info.resourceType, info.resourceSprite);
                 }
             }
         }

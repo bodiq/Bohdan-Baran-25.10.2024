@@ -12,8 +12,11 @@ public class ResourcesIndicator : MonoBehaviour
     [SerializeField] private ResourcesInformation resourcesInformation;
 
     private int _resourcesToEarn;
-    private int _resourcesEarned;
+    private int _resourcesEarned = 0;
     private ResourceType _resourceType;
+    private bool isFull = false;
+
+    public bool IsFull => isFull;
 
     public void Initialize(int countToEarn, ResourceType resourceType)
     {
@@ -23,6 +26,19 @@ public class ResourcesIndicator : MonoBehaviour
         if (resourcesInformation.resourcesInformation.TryGetValue(_resourceType, out var sprite))
         {
             resourceImage.sprite = sprite;
+        }
+    }
+
+    public void IncreaseResourceAmount(int amountIncreased)
+    {
+        if (!isFull)
+        {
+            _resourcesEarned += amountIncreased;
+            resourcesEarnedText.text = _resourcesEarned.ToString();
+            if (_resourcesEarned == _resourcesToEarn)
+            {
+                isFull = true;
+            }
         }
     }
 }
