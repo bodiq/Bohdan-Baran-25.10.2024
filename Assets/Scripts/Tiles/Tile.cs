@@ -12,7 +12,8 @@ namespace Tiles
         [SerializeField] private List<Indicator> indicators;
         [SerializeField] private ResourcesIndicatorManager resourcesIndicatorManager;
         [SerializeField] private GameObject tilesObjects;
-        [NonSerialized] public Tile[] neighbours = new Tile[6];
+        
+        [HideInInspector] public Tile[] neighbours = new Tile[6];
         
         private bool isUnlocked = false;
         private bool isReserved = false;

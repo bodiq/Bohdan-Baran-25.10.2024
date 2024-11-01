@@ -4,6 +4,7 @@ using Data;
 using Enums;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using Constants;
 
 namespace Managers
 {
@@ -15,7 +16,7 @@ namespace Managers
         private ResourceData[] _resourceData;
         private Camera _mainCamera;
 
-        [NonSerialized] public Dictionary<ResourceType, ResourcesIndicator> _activeResourceIndicators = new();
+        public Dictionary<ResourceType, ResourcesIndicator> _activeResourceIndicators = new();
 
         private void Start()
         {
@@ -33,11 +34,11 @@ namespace Managers
 
         private void SetRandomResourceCondition()
         {
-            var arrayDataLenght = Random.Range(Constants.ResourceConstants.MinResourcesArrayLenght, Constants.ResourceConstants.MaxResourcesArrayLenght);
+            var arrayDataLenght = Random.Range(ResourceConstants.MinResourcesArrayLenght, ResourceConstants.MaxResourcesArrayLenght);
             
             _resourceData = new ResourceData[arrayDataLenght];
             
-            var listAvailableEnums = new List<ResourceType>(Constants.ResourceConstants.ListResourceTypes);
+            var listAvailableEnums = new List<ResourceType>(ResourceConstants.ListResourceTypes);
 
             for (var i = 0; i < arrayDataLenght; i++)
             {
@@ -48,7 +49,7 @@ namespace Managers
                 }
                 
                 var randomResource = GetRandomResourceType(listAvailableEnums);
-                var randomCountToEarn = Random.Range(Constants.ResourceConstants.MinResourcesCount, Constants.ResourceConstants.MaxResourcesCount);
+                var randomCountToEarn = Random.Range(ResourceConstants.MinResourcesCount, ResourceConstants.MaxResourcesCount);
                 listAvailableEnums.Remove(randomResource);
                 _resourceData[i].ResourceType = randomResource;
                 _resourceData[i].CountToEarn = randomCountToEarn;
