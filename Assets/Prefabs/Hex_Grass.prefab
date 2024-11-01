@@ -87,7 +87,7 @@ MonoBehaviour:
   - {fileID: 6598770997043761493}
   - {fileID: 2007272219566638450}
   - {fileID: 695843421302686095}
-  resourcesIndicatorManager: {fileID: 2837144863030294842}
+  resourcesIndicatorManager: {fileID: 6167759429126025559}
   tilesObjects: {fileID: 577013089846461346}
 --- !u!1 &3104003037218875521
 GameObject:
@@ -1461,9 +1461,9 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f7043d255182c3941bb6bcfe6a404001, type: 3}
---- !u!114 &2837144863030294842 stripped
+--- !u!114 &6167759429126025559 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5316806308716707751, guid: f7043d255182c3941bb6bcfe6a404001,
+  m_CorrespondingSourceObject: {fileID: 4255566942586058698, guid: f7043d255182c3941bb6bcfe6a404001,
     type: 3}
   m_PrefabInstance: {fileID: 7968705108829783709}
   m_PrefabAsset: {fileID: 0}

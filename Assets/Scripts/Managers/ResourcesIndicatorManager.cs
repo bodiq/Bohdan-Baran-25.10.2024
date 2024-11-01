@@ -10,16 +10,32 @@ namespace Managers
     public class ResourcesIndicatorManager : MonoBehaviour
     {
         [SerializeField] private List<ResourcesIndicator> resourcesIndicators;
+        [SerializeField] private Canvas canvas;
 
-        private ResourceData[] resourceData;
+        private ResourceData[] _resourceData;
+        private Camera _mainCamera;
 
         [NonSerialized] public Dictionary<ResourceType, ResourcesIndicator> _activeResourceIndicators = new();
+
+        private void Start()
+        {
+            _mainCamera = Camera.main;
+            canvas.worldCamera = _mainCamera;
+        }
+
+        private void LateUpdate()
+        {
+            if (_mainCamera != null)
+            {
+                transform.LookAt(transform.position + _mainCamera.transform.rotation * Vector3.forward, _mainCamera.transform.rotation * Vector3.up);
+            }
+        }
 
         private void SetRandomResourceCondition()
         {
             var arrayDataLenght = Random.Range(Constants.ResourceConstants.MinResourcesArrayLenght, Constants.ResourceConstants.MaxResourcesArrayLenght);
             
-            resourceData = new ResourceData[arrayDataLenght];
+            _resourceData = new ResourceData[arrayDataLenght];
             
             var listAvailableEnums = new List<ResourceType>(Constants.ResourceConstants.ListResourceTypes);
 
@@ -34,8 +50,8 @@ namespace Managers
                 var randomResource = GetRandomResourceType(listAvailableEnums);
                 var randomCountToEarn = Random.Range(Constants.ResourceConstants.MinResourcesCount, Constants.ResourceConstants.MaxResourcesCount);
                 listAvailableEnums.Remove(randomResource);
-                resourceData[i].ResourceType = randomResource;
-                resourceData[i].CountToEarn = randomCountToEarn;
+                _resourceData[i].ResourceType = randomResource;
+                _resourceData[i].CountToEarn = randomCountToEarn;
             }
         }
 
@@ -62,11 +78,11 @@ namespace Managers
         {
             SetRandomResourceCondition();
             
-            for (var i = 0; i < resourceData.Length; i++)
+            for (var i = 0; i < _resourceData.Length; i++)
             {
                 resourcesIndicators[i].gameObject.SetActive(true);
-                resourcesIndicators[i].Initialize(resourceData[i].CountToEarn, resourceData[i].ResourceType);
-                _activeResourceIndicators.Add(resourceData[i].ResourceType, resourcesIndicators[i]);
+                resourcesIndicators[i].Initialize(_resourceData[i].CountToEarn, _resourceData[i].ResourceType);
+                _activeResourceIndicators.Add(_resourceData[i].ResourceType, resourcesIndicators[i]);
             }
             
             gameObject.SetActive(false);
