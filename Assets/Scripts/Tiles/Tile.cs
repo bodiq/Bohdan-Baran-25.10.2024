@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Data;
 using Managers;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -12,6 +11,7 @@ namespace Tiles
     {
         [SerializeField] private List<Indicator> indicators;
         [SerializeField] private ResourcesIndicatorManager resourcesIndicatorManager;
+        [SerializeField] private GameObject tilesObjects;
         [NonSerialized] public Tile[] neighbours = new Tile[6];
         
         private bool isUnlocked = false;
@@ -19,6 +19,7 @@ namespace Tiles
 
         public List<Indicator> AvailableIndicators => indicators;
         public ResourcesIndicatorManager ResourcesIndicatorManager => resourcesIndicatorManager;
+        public GameObject TileObjects => tilesObjects;
         public bool IsTileUnlocked
         {
             get => isUnlocked;
@@ -33,6 +34,8 @@ namespace Tiles
 
         public void OpenTile()
         {
+            ResourcesIndicatorManager.gameObject.SetActive(false);
+            tilesObjects.SetActive(true);
             isUnlocked = true;
             
             if (AvailableIndicators == null || AvailableIndicators.Count == 0)

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Tiles;
@@ -85,8 +84,8 @@ namespace Managers
                     tile.neighbours[5] = GetNeighbour(i + 1, j + (i % 2 == 1 ? 1 : 0), j < columnsMap - 1 || i % 2 == 0); // Верхній правий
                     
                     tile.ResourcesIndicatorManager.Initialize();
-                    tile.gameObject.SetActive(false);
-                    
+                    tile.TileObjects.SetActive(false);
+
                     foreach (var tileAvailableIndicator in tile.AvailableIndicators)
                     {
                         tileAvailableIndicator.SetIndicatorDependence(tile);
@@ -102,7 +101,7 @@ namespace Managers
 
         public void UnlockTile(Tile tile)
         {
-            if (tile.gameObject.activeSelf)
+            if (tile.IsTileUnlocked)
             {
                 return;
             }

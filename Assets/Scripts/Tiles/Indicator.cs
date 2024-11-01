@@ -36,6 +36,7 @@ namespace Tiles
             transform.position = position;
             myTile.IsTileUnlocked = true;
             nextTileToOpen.IsTileReserved = true;
+            nextTileToOpen.ResourcesIndicatorManager.gameObject.SetActive(true);
         }
 
         public bool CheckTileActive()
