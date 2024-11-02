@@ -12,6 +12,7 @@ namespace Tiles
         [SerializeField] private List<Indicator> indicators;
         [SerializeField] private ResourcesIndicatorManager resourcesIndicatorManager;
         [SerializeField] private GameObject tilesObjects;
+        [SerializeField] private Transform resourcesEndPoint;
         
         [HideInInspector] public Tile[] neighbours = new Tile[6];
         
@@ -21,6 +22,7 @@ namespace Tiles
         public List<Indicator> AvailableIndicators => indicators;
         public ResourcesIndicatorManager ResourcesIndicatorManager => resourcesIndicatorManager;
         public GameObject TileObjects => tilesObjects;
+        public Transform ResourcesEndPoint => resourcesEndPoint;
         public bool IsTileUnlocked
         {
             get => isUnlocked;

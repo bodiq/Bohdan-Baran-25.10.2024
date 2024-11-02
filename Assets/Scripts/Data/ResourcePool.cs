@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DefaultNamespace;
 using Enums;
 using UnityEngine;
 
@@ -9,9 +10,9 @@ namespace Data
     public class ResourcePool
     {
         public ResourceType resourceType;
-        public GameObject prefab;
+        public ResourceItem prefab;
         public int initializeSize;
         public Transform parent;
-        [HideInInspector] public Queue<GameObject> PoolQueue;
+        [HideInInspector] public Queue<ResourceItem> PoolQueue;
     }
 }

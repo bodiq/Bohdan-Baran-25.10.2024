@@ -1,69 +1,82 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using Data;
+using DefaultNamespace;
 using Enums;
+using UnityEngine;
 
-public class ResourcePoolManager : MonoBehaviour
+namespace Managers
 {
-    [SerializeField] private List<ResourcePool> resourcePools;
+    public class ResourcePoolManager : MonoBehaviour
+    {
+        public static ResourcePoolManager Instance { get; private set; }
     
-    private Dictionary<ResourceType, ResourcePool> _resourceDictionaryPool = new();
+        [SerializeField] private List<ResourcePool> resourcePools;
+    
+        private Dictionary<ResourceType, ResourcePool> _resourceDictionaryPool = new();
 
-    private void Awake()
-    {
-        InitializePools();
-    }
-
-    private void InitializePools()
-    {
-        foreach (var pool in resourcePools)
+        private void Awake()
         {
-            pool.PoolQueue = new Queue<GameObject>();
-
-            for (int i = 0; i < pool.initializeSize; i++)
+            if (Instance != null && Instance != this)
             {
-                var obj = Instantiate(pool.prefab, pool.parent);
-                obj.SetActive(false);
-                pool.PoolQueue.Enqueue(obj);
+                Destroy(this);
+            }
+            else
+            {
+                Instance = this;
+            }
+        
+            InitializePools();
+        }
+
+        private void InitializePools()
+        {
+            foreach (var pool in resourcePools)
+            {
+                pool.PoolQueue = new Queue<ResourceItem>();
+
+                for (int i = 0; i < pool.initializeSize; i++)
+                {
+                    var obj = Instantiate(pool.prefab, pool.parent);
+                    obj.gameObject.SetActive(false);
+                    pool.PoolQueue.Enqueue(obj);
+                }
+
+                _resourceDictionaryPool[pool.resourceType] = pool;
+            }
+        }
+
+        public ResourceItem GetResource(ResourceType resourceType)
+        {
+            if (!_resourceDictionaryPool.ContainsKey(resourceType))
+            {
+                Debug.LogError("Resource type " + resourceType + " not found!");
+                return null;
             }
 
-            _resourceDictionaryPool[pool.resourceType] = pool;
-        }
-    }
+            var pool = _resourceDictionaryPool[resourceType];
 
-    public GameObject GetResource(ResourceType resourceType)
-    {
-        if (!_resourceDictionaryPool.ContainsKey(resourceType))
-        {
-            Debug.LogError("Resource type " + resourceType + " not found!");
-            return null;
+            if (pool.PoolQueue.Count > 0)
+            {
+                return pool.PoolQueue.Dequeue();
+            }
+            else
+            {
+                var obj = Instantiate(pool.prefab, pool.parent);
+                return obj;
+            }
         }
 
-        var pool = _resourceDictionaryPool[resourceType];
-
-        if (pool.PoolQueue.Count > 0)
+        public void ReturnResource(ResourceType resourceType, ResourceItem obj)
         {
-            return pool.PoolQueue.Dequeue();
-        }
-        else
-        {
-            var obj = Instantiate(pool.prefab, pool.parent);
-            return obj;
-        }
-    }
-
-    public void ReturnResource(ResourceType resourceType, GameObject obj)
-    {
-        if (!_resourceDictionaryPool.ContainsKey(resourceType))
-        {
-            Debug.LogError("Resource type " + resourceType + " not found!");
-            Destroy(obj);
-            return;
-        }
+            if (!_resourceDictionaryPool.ContainsKey(resourceType))
+            {
+                Debug.LogError("Resource type " + resourceType + " not found!");
+                Destroy(obj);
+                return;
+            }
         
-        obj.SetActive(false);
-        _resourceDictionaryPool[resourceType].PoolQueue.Enqueue(obj);
+            obj.gameObject.SetActive(false);
+            _resourceDictionaryPool[resourceType].PoolQueue.Enqueue(obj);
+        }
     }
 }

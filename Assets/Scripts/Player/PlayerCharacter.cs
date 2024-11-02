@@ -14,6 +14,8 @@ namespace Player
             {
                 Debug.LogError("PlayerMovement component missing on " + gameObject.name);
             }
+
+            GameManager.Instance.Player = this;
         }
 
         void Update()

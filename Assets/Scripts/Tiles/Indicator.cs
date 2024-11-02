@@ -79,7 +79,9 @@ namespace Tiles
             {
                 foreach (var activeResourceIndicator in nextTileToOpen.ResourcesIndicatorManager._activeResourceIndicators)
                 {
-                    activeResourceIndicator.Value.IncreaseResourceAmount();
+                    var resource = ResourcePoolManager.Instance.GetResource(activeResourceIndicator.Key);
+                    resource.gameObject.SetActive(true);
+                    resource.TriggerResourceFly(GameManager.Instance.Player.transform.position, nextTileToOpen.ResourcesEndPoint.position, activeResourceIndicator.Value);
                 }
 
                 yield return null;

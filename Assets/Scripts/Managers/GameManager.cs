@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Player;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -10,7 +11,9 @@ public class GameManager : MonoBehaviour
     [Header("Input Setup")]
     [SerializeField] private Joystick joystick;
     
+
     public Joystick Joystick => joystick;
+    public PlayerCharacter Player { get; set; }
 
     private void Awake()
     {

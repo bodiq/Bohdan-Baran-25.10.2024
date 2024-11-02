@@ -17,6 +17,7 @@ public class ResourcesIndicator : MonoBehaviour
     private bool isFull = false;
 
     public bool IsFull => isFull;
+    public ResourceType ResourceType => _resourceType; 
 
     public void Initialize(int countToEarn, ResourceType resourceType)
     {
