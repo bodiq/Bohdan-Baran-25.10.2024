@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using Player;
 using UnityEngine;
 
@@ -25,5 +26,7 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
         }
+        
+        DOTween.SetTweensCapacity(2000, 500);
     }
 }
