@@ -22,6 +22,8 @@ namespace Tiles
         private static readonly WaitForSeconds WaitBetweenSpawnResources = new (IntervalBetweenSpawnResources);
 
         private List<ResourcesIndicator> _resourcesIndicators = new();
+        private List<int> _countToIncreaseResources = new();
+
 
         public void SetIndicatorDependence(Tile tile)
         {
@@ -56,22 +58,26 @@ namespace Tiles
 
         private void OnTriggerEnter(Collider other)
         {
+            if (_isCollecting)
+                return; 
+            
+            _resourcesIndicators.Clear();
+            _countToIncreaseResources.Clear();
+
             foreach (var indicator in _nextTileToOpen.ResourcesIndicatorManager.ActiveResourceIndicators)
             {
                 if (GameManager.Instance.Player.PlayerResourceCount.TryGetValue(indicator.Key, out var value))
                 {
                     var hasToBeEarned = indicator.Value.ResourceToEarn - indicator.Value.ResourceEarned;
-                    if (hasToBeEarned <= value && hasToBeEarned != 0)
+                    if (hasToBeEarned > 0 && hasToBeEarned <= value)
                     {
-                        if (hasToBeEarned <= 20)
+                        indicator.Value.CountToIncrease = hasToBeEarned <= 20 ? 1 : Mathf.Max(1, hasToBeEarned / 20);
+                        
+                        if (!_resourcesIndicators.Contains(indicator.Value))
                         {
-                            indicator.Value.CountToIncrease = 1;
+                            _resourcesIndicators.Add(indicator.Value);
+                            _countToIncreaseResources.Add(indicator.Value.CountToIncrease);
                         }
-                        else
-                        {
-                            indicator.Value.CountToIncrease = hasToBeEarned / 20;
-                        }
-                        _resourcesIndicators.Add(indicator.Value);
                     }
                 }
             }
@@ -82,6 +88,7 @@ namespace Tiles
             }
         }
 
+
         private void OnTriggerExit(Collider other)
         {
             _isCollecting = false;
@@ -90,8 +97,6 @@ namespace Tiles
                 StopCoroutine(_collectingCoroutine);
                 _collectingCoroutine = null;
             }
-            
-            _resourcesIndicators.Clear();
         }
 
         private IEnumerator CollectResource()
@@ -100,14 +105,15 @@ namespace Tiles
 
             while (!_nextTileToOpen.ResourcesIndicatorManager.CheckIfResourceIndicatorsAreFull())
             {
-                foreach (var resourceIndicator in _resourcesIndicators)
+                for (var i = 0; i < _resourcesIndicators.Count; i++)
                 {
+                    var resourceIndicator = _resourcesIndicators[i];
                     if (!resourceIndicator.IsResourcesFull)
                     {
                         resourceIndicator.IncreaseResourceCount();
                         var resource = ResourcePoolManager.Instance.GetResource(resourceIndicator.ResourceType);
                         resource.gameObject.SetActive(true);
-                        resource.TriggerResourceFly(GameManager.Instance.Player.transform.position, _nextTileToOpen.ResourcesEndPoint.position, resourceIndicator);
+                        resource.TriggerResourceFly(GameManager.Instance.Player.transform.position, _nextTileToOpen.ResourcesEndPoint.position, resourceIndicator, _countToIncreaseResources[i]);
                     }
                 }
 
