@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Configs;
 using Data;
 using Enums;
 using UnityEngine;
@@ -55,7 +56,7 @@ namespace Managers
                 var randomCountToEarn = Random.Range(ResourceConstants.MinResourcesCount, ResourceConstants.MaxResourcesCount);
                 listAvailableEnums.Remove(randomResource);
                 _resourceData[i].ResourceType = randomResource;
-                _resourceData[i].CountToEarn = randomCountToEarn;
+                _resourceData[i].CountToEarn = ConfigHelper.RoundToNearestTen(randomCountToEarn);
             }
         }
 
