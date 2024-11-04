@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Managers;
 using UnityEngine;
@@ -16,7 +17,12 @@ namespace Tiles
         private bool _isCollecting = false;
 
         private Coroutine _collectingCoroutine;
-    
+
+        private static readonly float IntervalBetweenSpawnResources = 0.1f;
+        private static readonly WaitForSeconds WaitBetweenSpawnResources = new (IntervalBetweenSpawnResources);
+
+        private List<ResourcesIndicator> _resourcesIndicators = new();
+
         public void SetIndicatorDependence(Tile tile)
         {
             _myTile = tile;
@@ -50,6 +56,26 @@ namespace Tiles
 
         private void OnTriggerEnter(Collider other)
         {
+            foreach (var indicator in _nextTileToOpen.ResourcesIndicatorManager.ActiveResourceIndicators)
+            {
+                if (GameManager.Instance.Player.PlayerResourceCount.TryGetValue(indicator.Key, out var value))
+                {
+                    var hasToBeEarned = indicator.Value.ResourceToEarn - indicator.Value.ResourceEarned;
+                    if (hasToBeEarned <= value && hasToBeEarned != 0)
+                    {
+                        if (hasToBeEarned <= 20)
+                        {
+                            indicator.Value.CountToIncrease = 1;
+                        }
+                        else
+                        {
+                            indicator.Value.CountToIncrease = hasToBeEarned / 20;
+                        }
+                        _resourcesIndicators.Add(indicator.Value);
+                    }
+                }
+            }
+            
             if (!_isCollecting)
             {
                 _collectingCoroutine = StartCoroutine(CollectResource());
@@ -64,6 +90,8 @@ namespace Tiles
                 StopCoroutine(_collectingCoroutine);
                 _collectingCoroutine = null;
             }
+            
+            _resourcesIndicators.Clear();
         }
 
         private IEnumerator CollectResource()
@@ -72,18 +100,18 @@ namespace Tiles
 
             while (!_nextTileToOpen.ResourcesIndicatorManager.CheckIfResourceIndicatorsAreFull())
             {
-                foreach (var activeResourceIndicator in _nextTileToOpen.ResourcesIndicatorManager.ActiveResourceIndicators)
+                foreach (var resourceIndicator in _resourcesIndicators)
                 {
-                    if (!activeResourceIndicator.Value.IsResourcesFull)
+                    if (!resourceIndicator.IsResourcesFull)
                     {
-                        activeResourceIndicator.Value.IncreaseResourceCount(3);
-                        var resource = ResourcePoolManager.Instance.GetResource(activeResourceIndicator.Key);
+                        resourceIndicator.IncreaseResourceCount();
+                        var resource = ResourcePoolManager.Instance.GetResource(resourceIndicator.ResourceType);
                         resource.gameObject.SetActive(true);
-                        resource.TriggerResourceFly(GameManager.Instance.Player.transform.position, _nextTileToOpen.ResourcesEndPoint.position, activeResourceIndicator.Value, 3);
+                        resource.TriggerResourceFly(GameManager.Instance.Player.transform.position, _nextTileToOpen.ResourcesEndPoint.position, resourceIndicator);
                     }
                 }
 
-                yield return null;
+                yield return WaitBetweenSpawnResources;
             }
             _isCollecting = false;
         }

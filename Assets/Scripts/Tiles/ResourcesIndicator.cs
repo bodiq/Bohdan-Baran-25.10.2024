@@ -24,9 +24,20 @@ namespace Tiles
 
         private ResourcesIndicatorManager _resourcesIndicatorManager;
 
+        private int _countToIncrease;
+
         public bool IsIndicatorFull => _isIndicatorFull;
         public bool IsResourcesFull => _isResourcesFull;
         public ResourceType ResourceType => _resourceType;
+
+        public int ResourceEarned => _resourcesEarned;
+        public int ResourceToEarn => _resourcesToEarn;
+
+        public int CountToIncrease
+        {
+            get => _countToIncrease;
+            set => _countToIncrease = value;
+        }
 
         private void Start()
         {
@@ -44,11 +55,11 @@ namespace Tiles
             }
         }
 
-        public void IncreaseResourceCount(int count)
+        public void IncreaseResourceCount()
         {
             if (!_isResourcesFull)
             {
-                _resourcesEarned += count;
+                _resourcesEarned += _countToIncrease;
                 if (_resourcesEarned >= _resourcesToEarn)
                 {
                     _isResourcesFull = true;
@@ -56,11 +67,11 @@ namespace Tiles
             }
         }
 
-        public void IncreaseResourceTextAmount(int count)
+        public void IncreaseResourceTextAmount()
         {
             if (!_isIndicatorFull)
             {
-                _resourceEarnedText += count;
+                _resourceEarnedText += _countToIncrease;
                 resourcesEarnedText.text = _resourceEarnedText.ToString();
                 if (_resourceEarnedText >= _resourcesToEarn)
                 {
