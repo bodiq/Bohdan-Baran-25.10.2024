@@ -31,23 +31,14 @@ namespace Tiles
             set => _myIndicatorResp = value;
         }
 
-        public bool IsTileUnlocked
-        {
-            get => _isUnlocked;
-            set => _isUnlocked = value;
-        }
-
-        public bool IsTileReserved
-        {
-            get => _isReserved;
-            set => _isReserved = value;
-        }
+        public bool IsTileUnlocked => _isUnlocked;
+        public bool IsTileReserved => _isReserved;
+        
 
         public void OpenTile()
         {
             ResourcesIndicatorManager.gameObject.SetActive(false);
-            tilesObjects.SetActive(true);
-            _isUnlocked = true;
+            UnlockTile();
             
             if (AvailableIndicators == null || AvailableIndicators.Count == 0)
             {
@@ -66,6 +57,17 @@ namespace Tiles
                 Debug.LogError("No indicators available on tile, null");
                 TileManager.Instance.UnlockRandomOpenTileIndicator();
             }
+        }
+        
+        public void UnlockTile()
+        {
+            _isUnlocked = true;
+            tilesObjects.SetActive(true);
+        }
+
+        public void ReserveTile()
+        {
+            _isReserved = true;
         }
 
         private Indicator GetRandomAvailableIndicator()

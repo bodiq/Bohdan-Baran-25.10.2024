@@ -19,8 +19,13 @@ namespace Player
 
         private void Start()
         {
-            _inputJoystick = GameManager.Instance.Joystick;
+            _inputJoystick = GameManager.Instance?.Joystick;
             _characterController = GetComponent<CharacterController>();
+
+            if (_inputJoystick == null)
+            {
+                Debug.LogError("Joystick not set in GameManager.");
+            }
         }
 
         public void Move()

@@ -4,7 +4,13 @@ namespace Data
 {
     public struct ResourceData
     {
-        public ResourceType ResourceType;
-        public int CountToEarn;
+        public readonly ResourceType ResourceType;
+        public readonly int CountToEarn;
+
+        public ResourceData(ResourceType resourceType, int countToEarn)
+        {
+            ResourceType = resourceType;
+            CountToEarn = countToEarn;
+        }
     }
 }

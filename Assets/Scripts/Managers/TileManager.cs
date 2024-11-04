@@ -17,10 +17,10 @@ namespace Managers
         
         private Tile[,] _tiles;
 
-        private const float VerticalDistance = 0.75f;
-        private const float CoefficientPlacement = 0.866f;
-        private const float TileXOffsetOddRow = 0.25f;
-        private const float HalfUnit = 0.5f;
+        private static readonly float VerticalDistance = 0.75f;
+        private static readonly float CoefficientPlacement = 0.866f;
+        private static readonly float TileXOffsetOddRow = 0.25f;
+        private static readonly float HalfUnit = 0.5f;
 
         private readonly List<Tile> _openTiles = new ();
 
@@ -105,28 +105,27 @@ namespace Managers
             {
                 return;
             }
-            else
+            
+            _openTiles.Add(tile);
+            tile.gameObject.SetActive(true);
+            if (tile.MyIndicator)
             {
-                _openTiles.Add(tile);
-                tile.gameObject.SetActive(true);
-                if (tile.MyIndicator)
-                {
-                    tile.MyIndicator.gameObject.SetActive(false);
-                }
-                tile.OpenTile();
-                if (_openTiles.Count % 2 == 0 && _openTiles.Count > 4)
-                {
-                    UnlockRandomOpenTileIndicator();
-                }
+                tile.MyIndicator.gameObject.SetActive(false);
             }
+            tile.OpenTile();
+            if (_openTiles.Count % 2 == 0 && _openTiles.Count > 4)
+            {
+                UnlockRandomOpenTileIndicator();
+            }
+            
         }
 
         public void UnlockRandomOpenTileIndicator()
         {
-            var availableIndicators = _openTiles.SelectMany(tile => tile.AvailableIndicators.Where(
-                indicator => indicator.NextTileToOpen != null 
-            && !indicator.NextTileToOpen.IsTileReserved 
-            && !indicator.NextTileToOpen.IsTileUnlocked)).ToList();
+            var availableIndicators = _openTiles.SelectMany(tile => tile.AvailableIndicators
+                .Where(indicator => indicator.NextTileToOpen != null 
+                && !indicator.NextTileToOpen.IsTileReserved 
+                && !indicator.NextTileToOpen.IsTileUnlocked)).ToList();
 
             if (availableIndicators.Count > 0)
             {

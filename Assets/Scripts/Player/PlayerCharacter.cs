@@ -23,18 +23,20 @@ namespace Player
 
             GameManager.Instance.Player = this;
 
+            InitializeResources();
+        }
+        
+        private void InitializeResources()
+        {
             foreach (var type in ResourceConstants.ListResourceTypes)
             {
-                PlayerResourceCount.Add(type, Random.Range(1000, 10000));
+                PlayerResourceCount[type] = Random.Range(1000, 10000);
             }
         }
 
         void Update()
         {
-            if (_playerMovement)
-            {
-                _playerMovement.Move();
-            }
+            _playerMovement?.Move();
         }
     }
 }

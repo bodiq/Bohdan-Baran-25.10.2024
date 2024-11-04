@@ -18,9 +18,9 @@ namespace Configs
         {
             resourcesInformation.Clear();
 
-            foreach (var info in resourcesInfo.Where(info => !resourcesInformation.ContainsKey(info.resourceType)))
+            foreach (var info in resourcesInfo.Where(info => !resourcesInformation.ContainsKey(info.ResourceType)))
             {
-                resourcesInformation.Add(info.resourceType, info.resourceSprite);
+                resourcesInformation.Add(info.ResourceType, info.ResourceSprite);
             }
         }
     }

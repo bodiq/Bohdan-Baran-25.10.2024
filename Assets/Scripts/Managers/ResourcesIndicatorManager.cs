@@ -55,8 +55,7 @@ namespace Managers
                 var randomResource = GetRandomResourceType(listAvailableEnums);
                 var randomCountToEarn = Random.Range(ResourceConstants.MinResourcesCount, ResourceConstants.MaxResourcesCount);
                 listAvailableEnums.Remove(randomResource);
-                _resourceData[i].ResourceType = randomResource;
-                _resourceData[i].CountToEarn = ConfigHelper.RoundToNearestTen(randomCountToEarn);
+                _resourceData[i] = new ResourceData(randomResource, ConfigHelper.RoundToNearestTen(randomCountToEarn));
             }
         }
 

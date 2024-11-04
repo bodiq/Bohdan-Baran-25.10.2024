@@ -47,13 +47,8 @@ namespace Managers
 
         public ResourceItem GetResource(ResourceType resourceType)
         {
-            if (!_resourceDictionaryPool.ContainsKey(resourceType))
-            {
-                Debug.LogError("Resource type " + resourceType + " not found!");
-                return null;
-            }
-
-            var pool = _resourceDictionaryPool[resourceType];
+            var pool = GetPool(resourceType);
+            if (pool == null) return null;
 
             if (pool.PoolQueue.Count > 0)
             {
@@ -65,18 +60,27 @@ namespace Managers
                 return obj;
             }
         }
+        
+        private ResourcePool GetPool(ResourceType resourceType)
+        {
+            if (!_resourceDictionaryPool.TryGetValue(resourceType, out var pool))
+            {
+                Debug.LogError("Resource type " + resourceType + " not found!");
+            }
+            return pool;
+        }
 
         public void ReturnResource(ResourceType resourceType, ResourceItem obj)
         {
-            if (!_resourceDictionaryPool.ContainsKey(resourceType))
+            var pool = GetPool(resourceType);
+            if (pool == null)
             {
-                Debug.LogError("Resource type " + resourceType + " not found!");
                 Destroy(obj);
                 return;
             }
-        
+
             obj.gameObject.SetActive(false);
-            _resourceDictionaryPool[resourceType].PoolQueue.Enqueue(obj);
+            pool.PoolQueue.Enqueue(obj);
         }
     }
 }
