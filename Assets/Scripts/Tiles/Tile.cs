@@ -19,10 +19,18 @@ namespace Tiles
         private bool isUnlocked = false;
         private bool isReserved = false;
 
+        private Indicator _myIndicatorResp;
+
         public List<Indicator> AvailableIndicators => indicators;
         public ResourcesIndicatorManager ResourcesIndicatorManager => resourcesIndicatorManager;
         public GameObject TileObjects => tilesObjects;
         public Transform ResourcesEndPoint => resourcesEndPoint;
+        public Indicator MyIndicator
+        {
+            get => _myIndicatorResp;
+            set => _myIndicatorResp = value;
+        }
+
         public bool IsTileUnlocked
         {
             get => isUnlocked;

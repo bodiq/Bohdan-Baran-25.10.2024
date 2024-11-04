@@ -1,5 +1,8 @@
+using System;
 using Configs;
 using Enums;
+using Managers;
+using Tiles;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,11 +16,22 @@ public class ResourcesIndicator : MonoBehaviour
 
     private int _resourcesToEarn;
     private int _resourcesEarned = 0;
+    private int _resourceEarnedText = 0;
     private ResourceType _resourceType;
-    private bool isFull = false;
+    
+    private bool _isIndicatorFull = false;
+    private bool _isResourcesFull = false;
 
-    public bool IsFull => isFull;
-    public ResourceType ResourceType => _resourceType; 
+    private ResourcesIndicatorManager _resourcesIndicatorManager;
+
+    public bool IsIndicatorFull => _isIndicatorFull;
+    public bool IsResourcesFull => _isResourcesFull;
+    public ResourceType ResourceType => _resourceType;
+
+    private void Start()
+    {
+        _resourcesIndicatorManager = GetComponentInParent<ResourcesIndicatorManager>();
+    }
 
     public void Initialize(int countToEarn, ResourceType resourceType)
     {
@@ -30,15 +44,32 @@ public class ResourcesIndicator : MonoBehaviour
         }
     }
 
-    public void IncreaseResourceAmount()
+    public void IncreaseResourceCount(int count)
     {
-        if (!isFull)
+        if (!_isResourcesFull)
         {
-            _resourcesEarned += 1;
-            resourcesEarnedText.text = _resourcesEarned.ToString();
-            if (_resourcesEarned == _resourcesToEarn)
+            _resourcesEarned += count;
+            if (_resourcesEarned >= _resourcesToEarn)
             {
-                isFull = true;
+                _isResourcesFull = true;
+            }
+        }
+    }
+
+    public void IncreaseResourceTextAmount(int count)
+    {
+        if (!_isIndicatorFull)
+        {
+            _resourceEarnedText += count;
+            resourcesEarnedText.text = _resourceEarnedText.ToString();
+            if (_resourceEarnedText >= _resourcesToEarn)
+            {
+                _isIndicatorFull = true;
+
+                if (_resourcesIndicatorManager.CheckIfResourceIndicatorsAreFull())
+                {
+                    TileManager.Instance.UnlockTile(_resourcesIndicatorManager.MyTile); 
+                }
             }
         }
     }

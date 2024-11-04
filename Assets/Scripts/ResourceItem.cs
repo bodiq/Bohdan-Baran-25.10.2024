@@ -36,7 +36,7 @@ namespace DefaultNamespace
             transform.rotation = Quaternion.Euler(0f, randomYOffsetRotation, 0f);
         }
 
-        public void TriggerResourceFly(Vector3 startPosition, Vector3 endPosition, ResourcesIndicator resourcesIndicator)
+        public void TriggerResourceFly(Vector3 startPosition, Vector3 endPosition, ResourcesIndicator resourcesIndicator, int countEarned)
         {
             transform.position = startPosition + _randomPositionOffset;
 
@@ -48,7 +48,7 @@ namespace DefaultNamespace
                 .OnComplete(() =>
                 {
                     ResourcePoolManager.Instance.ReturnResource(resourcesIndicator.ResourceType, this);
-                    resourcesIndicator.IncreaseResourceAmount();
+                    resourcesIndicator.IncreaseResourceTextAmount(countEarned);
                 });
         }
 

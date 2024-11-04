@@ -5,6 +5,7 @@ using Enums;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using Constants;
+using Tiles;
 
 namespace Managers
 {
@@ -17,6 +18,14 @@ namespace Managers
         private Camera _mainCamera;
 
         public Dictionary<ResourceType, ResourcesIndicator> _activeResourceIndicators = new();
+
+        private Tile _myTile;
+        
+        public Tile MyTile
+        {
+            get => _myTile;
+            set => _myTile = value;
+        }
 
         private void Start()
         {
@@ -60,7 +69,7 @@ namespace Managers
         {
             foreach (var indicator in _activeResourceIndicators)
             {
-                if (!indicator.Value.IsFull)
+                if (!indicator.Value.IsIndicatorFull)
                 {
                     return false;
                 }

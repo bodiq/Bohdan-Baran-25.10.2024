@@ -109,6 +109,10 @@ namespace Managers
             {
                 openTiles.Add(tile);
                 tile.gameObject.SetActive(true);
+                if (tile.MyIndicator)
+                {
+                    tile.MyIndicator.gameObject.SetActive(false);
+                }
                 tile.OpenTile();
                 if (openTiles.Count % 2 == 0 && openTiles.Count > 4)
                 {

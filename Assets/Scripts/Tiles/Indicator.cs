@@ -44,14 +44,9 @@ namespace Tiles
             myTile.IsTileUnlocked = true;
             nextTileToOpen.IsTileReserved = true;
             nextTileToOpen.ResourcesIndicatorManager.gameObject.SetActive(true);
+            nextTileToOpen.ResourcesIndicatorManager.MyTile = nextTileToOpen;
+            nextTileToOpen.MyIndicator = this;
         }
-
-        public bool CheckTileActive()
-        {
-            return nextTileToOpen.gameObject.activeSelf;
-        }
-        
-        
 
         private void OnTriggerEnter(Collider other)
         {
@@ -79,18 +74,19 @@ namespace Tiles
             {
                 foreach (var activeResourceIndicator in nextTileToOpen.ResourcesIndicatorManager._activeResourceIndicators)
                 {
-                    var resource = ResourcePoolManager.Instance.GetResource(activeResourceIndicator.Key);
-                    resource.gameObject.SetActive(true);
-                    resource.TriggerResourceFly(GameManager.Instance.Player.transform.position, nextTileToOpen.ResourcesEndPoint.position, activeResourceIndicator.Value);
+                    if (!activeResourceIndicator.Value.IsResourcesFull)
+                    {
+                        activeResourceIndicator.Value.IncreaseResourceCount(3);
+                        var resource = ResourcePoolManager.Instance.GetResource(activeResourceIndicator.Key);
+                        resource.gameObject.SetActive(true);
+                        resource.TriggerResourceFly(GameManager.Instance.Player.transform.position, nextTileToOpen.ResourcesEndPoint.position, activeResourceIndicator.Value, 3);
+                    }
                 }
 
                 yield return null;
             }
-            
-            TileManager.Instance.UnlockTile(nextTileToOpen);
-            gameObject.SetActive(false);
-
             _isCollecting = false;
         }
+
     }
 }
