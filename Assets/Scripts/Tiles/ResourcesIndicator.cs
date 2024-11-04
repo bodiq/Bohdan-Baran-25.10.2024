@@ -1,74 +1,75 @@
-using System;
 using Configs;
 using Enums;
 using Managers;
-using Tiles;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ResourcesIndicator : MonoBehaviour
+namespace Tiles
 {
-    [SerializeField] private TextMeshProUGUI resourcesEarnedText;
-    [SerializeField] private TextMeshProUGUI resourcesToGoText;
-    [SerializeField] private Image resourceImage;
-    [SerializeField] private ResourcesInformation resourcesInformation;
+    public class ResourcesIndicator : MonoBehaviour
+    {
+        [SerializeField] private TextMeshProUGUI resourcesEarnedText;
+        [SerializeField] private TextMeshProUGUI resourcesToGoText;
+        [SerializeField] private Image resourceImage;
+        [SerializeField] private ResourcesInformation resourcesInformation;
 
-    private int _resourcesToEarn;
-    private int _resourcesEarned = 0;
-    private int _resourceEarnedText = 0;
-    private ResourceType _resourceType;
+        private int _resourcesToEarn;
+        private int _resourcesEarned = 0;
+        private int _resourceEarnedText = 0;
+        private ResourceType _resourceType;
     
-    private bool _isIndicatorFull = false;
-    private bool _isResourcesFull = false;
+        private bool _isIndicatorFull = false;
+        private bool _isResourcesFull = false;
 
-    private ResourcesIndicatorManager _resourcesIndicatorManager;
+        private ResourcesIndicatorManager _resourcesIndicatorManager;
 
-    public bool IsIndicatorFull => _isIndicatorFull;
-    public bool IsResourcesFull => _isResourcesFull;
-    public ResourceType ResourceType => _resourceType;
+        public bool IsIndicatorFull => _isIndicatorFull;
+        public bool IsResourcesFull => _isResourcesFull;
+        public ResourceType ResourceType => _resourceType;
 
-    private void Start()
-    {
-        _resourcesIndicatorManager = GetComponentInParent<ResourcesIndicatorManager>();
-    }
-
-    public void Initialize(int countToEarn, ResourceType resourceType)
-    {
-        _resourcesToEarn = countToEarn;
-        _resourceType = resourceType;
-        resourcesToGoText.text = _resourcesToEarn.ToString();
-        if (resourcesInformation.resourcesInformation.TryGetValue(_resourceType, out var sprite))
+        private void Start()
         {
-            resourceImage.sprite = sprite;
+            _resourcesIndicatorManager = GetComponentInParent<ResourcesIndicatorManager>();
         }
-    }
 
-    public void IncreaseResourceCount(int count)
-    {
-        if (!_isResourcesFull)
+        public void Initialize(int countToEarn, ResourceType resourceType)
         {
-            _resourcesEarned += count;
-            if (_resourcesEarned >= _resourcesToEarn)
+            _resourcesToEarn = countToEarn;
+            _resourceType = resourceType;
+            resourcesToGoText.text = _resourcesToEarn.ToString();
+            if (resourcesInformation.resourcesInformation.TryGetValue(_resourceType, out var sprite))
             {
-                _isResourcesFull = true;
+                resourceImage.sprite = sprite;
             }
         }
-    }
 
-    public void IncreaseResourceTextAmount(int count)
-    {
-        if (!_isIndicatorFull)
+        public void IncreaseResourceCount(int count)
         {
-            _resourceEarnedText += count;
-            resourcesEarnedText.text = _resourceEarnedText.ToString();
-            if (_resourceEarnedText >= _resourcesToEarn)
+            if (!_isResourcesFull)
             {
-                _isIndicatorFull = true;
-
-                if (_resourcesIndicatorManager.CheckIfResourceIndicatorsAreFull())
+                _resourcesEarned += count;
+                if (_resourcesEarned >= _resourcesToEarn)
                 {
-                    TileManager.Instance.UnlockTile(_resourcesIndicatorManager.MyTile); 
+                    _isResourcesFull = true;
+                }
+            }
+        }
+
+        public void IncreaseResourceTextAmount(int count)
+        {
+            if (!_isIndicatorFull)
+            {
+                _resourceEarnedText += count;
+                resourcesEarnedText.text = _resourceEarnedText.ToString();
+                if (_resourceEarnedText >= _resourcesToEarn)
+                {
+                    _isIndicatorFull = true;
+
+                    if (_resourcesIndicatorManager.CheckIfResourceIndicatorsAreFull())
+                    {
+                        TileManager.Instance.UnlockTile(_resourcesIndicatorManager.MyTile); 
+                    }
                 }
             }
         }

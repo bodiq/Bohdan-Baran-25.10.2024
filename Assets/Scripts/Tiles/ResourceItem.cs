@@ -1,11 +1,9 @@
-﻿using System;
-using Constants;
-using DG.Tweening;
+﻿using DG.Tweening;
 using Managers;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace DefaultNamespace
+namespace Tiles
 {
     public class ResourceItem : MonoBehaviour
     {

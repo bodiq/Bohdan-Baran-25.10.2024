@@ -15,14 +15,14 @@ namespace Managers
         [SerializeField] private int rowsMap;
         [SerializeField] private float tileSize;
         
-        private Tile[,] tiles;
+        private Tile[,] _tiles;
 
         private const float VerticalDistance = 0.75f;
         private const float CoefficientPlacement = 0.866f;
         private const float TileXOffsetOddRow = 0.25f;
         private const float HalfUnit = 0.5f;
 
-        private List<Tile> openTiles = new ();
+        private readonly List<Tile> _openTiles = new ();
 
         private void Awake()
         {
@@ -41,12 +41,12 @@ namespace Managers
         private void Start()
         {
             SetTileDependencies();
-            UnlockTile(tiles[0, 0]);
+            UnlockTile(_tiles[0, 0]);
         }
 
         private void GenerateHexTiles()
         {
-            tiles = new Tile[rowsMap, columnsMap];
+            _tiles = new Tile[rowsMap, columnsMap];
 
             for (var i = 0; i < rowsMap; i++)
             {
@@ -63,7 +63,7 @@ namespace Managers
 
                     var position = new Vector3(xOffset, 0, zOffset);
                     var tile = Instantiate(tilePrefab, position, Quaternion.identity, transform);
-                    tiles[i, j] = tile;
+                    _tiles[i, j] = tile;
                 }
             }
         }
@@ -74,7 +74,7 @@ namespace Managers
             {
                 for (var j = 0; j < columnsMap; j++)
                 {
-                    var tile = tiles[i, j];
+                    var tile = _tiles[i, j];
 
                     tile.neighbours[0] = GetNeighbour(i - 1, j - (i % 2 == 0 ? 1 : 0), j > 0 || i % 2 == 1); // Нижній лівий
                     tile.neighbours[1] = GetNeighbour(i - 1, j + (i % 2 == 1 ? 1 : 0), j < columnsMap - 1 || i % 2 == 0); // Нижній правий
@@ -96,7 +96,7 @@ namespace Managers
 
         private Tile GetNeighbour(int i, int j, bool condition)
         {
-            return condition && i >= 0 && i < rowsMap && j >= 0 && j < columnsMap ? tiles[i, j] : null;
+            return condition && i >= 0 && i < rowsMap && j >= 0 && j < columnsMap ? _tiles[i, j] : null;
         }
 
         public void UnlockTile(Tile tile)
@@ -107,14 +107,14 @@ namespace Managers
             }
             else
             {
-                openTiles.Add(tile);
+                _openTiles.Add(tile);
                 tile.gameObject.SetActive(true);
                 if (tile.MyIndicator)
                 {
                     tile.MyIndicator.gameObject.SetActive(false);
                 }
                 tile.OpenTile();
-                if (openTiles.Count % 2 == 0 && openTiles.Count > 4)
+                if (_openTiles.Count % 2 == 0 && _openTiles.Count > 4)
                 {
                     UnlockRandomOpenTileIndicator();
                 }
@@ -123,7 +123,7 @@ namespace Managers
 
         public void UnlockRandomOpenTileIndicator()
         {
-            var availableIndicators = openTiles.SelectMany(tile => tile.AvailableIndicators.Where(
+            var availableIndicators = _openTiles.SelectMany(tile => tile.AvailableIndicators.Where(
                 indicator => indicator.NextTileToOpen != null 
             && !indicator.NextTileToOpen.IsTileReserved 
             && !indicator.NextTileToOpen.IsTileUnlocked)).ToList();

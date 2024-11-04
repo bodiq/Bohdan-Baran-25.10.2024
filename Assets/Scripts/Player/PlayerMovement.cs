@@ -9,34 +9,35 @@ namespace Player
         
         [SerializeField] private Animator animator;
 
-        private Joystick inputJoystick;
-        private CharacterController characterController;
+        private Joystick _inputJoystick;
+        private CharacterController _characterController;
 
-        private Vector3 moveDirection = Vector3.zero;
+        private Vector3 _moveDirection = Vector3.zero;
+        private static readonly int Speed = Animator.StringToHash(AnimationSpeedParameterName);
 
         private const string AnimationSpeedParameterName = "Speed";
 
         private void Start()
         {
-            inputJoystick = GameManager.Instance.Joystick;
-            characterController = GetComponent<CharacterController>();
+            _inputJoystick = GameManager.Instance.Joystick;
+            _characterController = GetComponent<CharacterController>();
         }
 
         public void Move()
         {
-            if (inputJoystick != null)
+            if (_inputJoystick != null)
             {
-                moveDirection = Vector3.forward * inputJoystick.Vertical + Vector3.right * inputJoystick.Horizontal;
-                animator.SetFloat(AnimationSpeedParameterName, moveDirection.magnitude);
+                _moveDirection = Vector3.forward * _inputJoystick.Vertical + Vector3.right * _inputJoystick.Horizontal;
+                animator.SetFloat(Speed, _moveDirection.magnitude);
             }
 
-            var movement = moveDirection.normalized * (moveSpeed * Time.deltaTime);
+            var movement = _moveDirection.normalized * (moveSpeed * Time.deltaTime);
 
-            characterController.Move(movement);
+            _characterController.Move(movement);
 
-            if (moveDirection != Vector3.zero)
+            if (_moveDirection != Vector3.zero)
             {
-                transform.rotation = Quaternion.LookRotation(moveDirection);
+                transform.rotation = Quaternion.LookRotation(_moveDirection);
             }
         }
     }

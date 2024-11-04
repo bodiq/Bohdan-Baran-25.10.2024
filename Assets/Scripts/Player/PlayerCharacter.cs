@@ -4,13 +4,13 @@ namespace Player
 {
     public class PlayerCharacter : MonoBehaviour
     {
-        private PlayerMovement playerMovement;
+        private PlayerMovement _playerMovement;
 
         private void Start()
         {
-            playerMovement = GetComponent<PlayerMovement>();
+            _playerMovement = GetComponent<PlayerMovement>();
 
-            if (playerMovement == null)
+            if (_playerMovement == null)
             {
                 Debug.LogError("PlayerMovement component missing on " + gameObject.name);
             }
@@ -20,9 +20,9 @@ namespace Player
 
         void Update()
         {
-            if (playerMovement)
+            if (_playerMovement)
             {
-                playerMovement.Move();
+                _playerMovement.Move();
             }
         }
     }

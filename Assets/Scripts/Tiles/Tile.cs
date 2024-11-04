@@ -16,8 +16,8 @@ namespace Tiles
         
         [HideInInspector] public Tile[] neighbours = new Tile[6];
         
-        private bool isUnlocked = false;
-        private bool isReserved = false;
+        private bool _isUnlocked = false;
+        private bool _isReserved = false;
 
         private Indicator _myIndicatorResp;
 
@@ -33,21 +33,21 @@ namespace Tiles
 
         public bool IsTileUnlocked
         {
-            get => isUnlocked;
-            set => isUnlocked = value;
+            get => _isUnlocked;
+            set => _isUnlocked = value;
         }
 
         public bool IsTileReserved
         {
-            get => isReserved;
-            set => isReserved = value;
+            get => _isReserved;
+            set => _isReserved = value;
         }
 
         public void OpenTile()
         {
             ResourcesIndicatorManager.gameObject.SetActive(false);
             tilesObjects.SetActive(true);
-            isUnlocked = true;
+            _isUnlocked = true;
             
             if (AvailableIndicators == null || AvailableIndicators.Count == 0)
             {

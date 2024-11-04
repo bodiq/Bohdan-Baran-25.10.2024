@@ -17,15 +17,9 @@ namespace Managers
         private ResourceData[] _resourceData;
         private Camera _mainCamera;
 
-        public Dictionary<ResourceType, ResourcesIndicator> _activeResourceIndicators = new();
+        public readonly Dictionary<ResourceType, ResourcesIndicator> ActiveResourceIndicators = new();
 
-        private Tile _myTile;
-        
-        public Tile MyTile
-        {
-            get => _myTile;
-            set => _myTile = value;
-        }
+        public Tile MyTile { get; set; }
 
         private void Start()
         {
@@ -67,7 +61,7 @@ namespace Managers
 
         public bool CheckIfResourceIndicatorsAreFull()
         {
-            foreach (var indicator in _activeResourceIndicators)
+            foreach (var indicator in ActiveResourceIndicators)
             {
                 if (!indicator.Value.IsIndicatorFull)
                 {
@@ -92,7 +86,7 @@ namespace Managers
             {
                 resourcesIndicators[i].gameObject.SetActive(true);
                 resourcesIndicators[i].Initialize(_resourceData[i].CountToEarn, _resourceData[i].ResourceType);
-                _activeResourceIndicators.Add(_resourceData[i].ResourceType, resourcesIndicators[i]);
+                ActiveResourceIndicators.Add(_resourceData[i].ResourceType, resourcesIndicators[i]);
             }
             
             gameObject.SetActive(false);

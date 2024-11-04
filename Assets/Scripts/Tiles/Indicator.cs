@@ -8,10 +8,10 @@ namespace Tiles
 {
     public class Indicator : MonoBehaviour
     {
-        private Tile nextTileToOpen;
-        private Tile myTile;
+        private Tile _nextTileToOpen;
+        private Tile _myTile;
 
-        public Tile NextTileToOpen => nextTileToOpen;
+        public Tile NextTileToOpen => _nextTileToOpen;
 
         private bool _isCollecting = false;
 
@@ -19,12 +19,12 @@ namespace Tiles
     
         public void SetIndicatorDependence(Tile tile)
         {
-            myTile = tile;
+            _myTile = tile;
         
-            if (myTile != null)
+            if (_myTile != null)
             {
-                nextTileToOpen = myTile.neighbours[gameObject.transform.GetSiblingIndex()];
-                if (nextTileToOpen == null || nextTileToOpen.IsTileUnlocked)
+                _nextTileToOpen = _myTile.neighbours[gameObject.transform.GetSiblingIndex()];
+                if (_nextTileToOpen == null || _nextTileToOpen.IsTileUnlocked)
                 {
                     gameObject.SetActive(false);
                     //myTile.AvailableIndicators.Remove(this);
@@ -41,11 +41,11 @@ namespace Tiles
             var position = transform.position;
             position = new Vector3(position.x, 0f, position.z);
             transform.position = position;
-            myTile.IsTileUnlocked = true;
-            nextTileToOpen.IsTileReserved = true;
-            nextTileToOpen.ResourcesIndicatorManager.gameObject.SetActive(true);
-            nextTileToOpen.ResourcesIndicatorManager.MyTile = nextTileToOpen;
-            nextTileToOpen.MyIndicator = this;
+            _myTile.IsTileUnlocked = true;
+            _nextTileToOpen.IsTileReserved = true;
+            _nextTileToOpen.ResourcesIndicatorManager.gameObject.SetActive(true);
+            _nextTileToOpen.ResourcesIndicatorManager.MyTile = _nextTileToOpen;
+            _nextTileToOpen.MyIndicator = this;
         }
 
         private void OnTriggerEnter(Collider other)
@@ -70,16 +70,16 @@ namespace Tiles
         {
             _isCollecting = true;
 
-            while (!nextTileToOpen.ResourcesIndicatorManager.CheckIfResourceIndicatorsAreFull())
+            while (!_nextTileToOpen.ResourcesIndicatorManager.CheckIfResourceIndicatorsAreFull())
             {
-                foreach (var activeResourceIndicator in nextTileToOpen.ResourcesIndicatorManager._activeResourceIndicators)
+                foreach (var activeResourceIndicator in _nextTileToOpen.ResourcesIndicatorManager.ActiveResourceIndicators)
                 {
                     if (!activeResourceIndicator.Value.IsResourcesFull)
                     {
                         activeResourceIndicator.Value.IncreaseResourceCount(3);
                         var resource = ResourcePoolManager.Instance.GetResource(activeResourceIndicator.Key);
                         resource.gameObject.SetActive(true);
-                        resource.TriggerResourceFly(GameManager.Instance.Player.transform.position, nextTileToOpen.ResourcesEndPoint.position, activeResourceIndicator.Value, 3);
+                        resource.TriggerResourceFly(GameManager.Instance.Player.transform.position, _nextTileToOpen.ResourcesEndPoint.position, activeResourceIndicator.Value, 3);
                     }
                 }
 

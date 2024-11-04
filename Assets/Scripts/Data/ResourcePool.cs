@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using DefaultNamespace;
 using Enums;
+using Tiles;
 using UnityEngine;
 
 namespace Data
