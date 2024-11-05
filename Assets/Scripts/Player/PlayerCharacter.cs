@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using Constants;
 using Data;
 using Enums;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Player
 {
@@ -12,6 +14,11 @@ namespace Player
 
         public Dictionary<ResourceType, int> PlayerResourceCount = new();
 
+        private void Awake()
+        {
+            InitializeResources();
+        }
+
         private void Start()
         {
             _playerMovement = GetComponent<PlayerMovement>();
@@ -20,10 +27,6 @@ namespace Player
             {
                 Debug.LogError("PlayerMovement component missing on " + gameObject.name);
             }
-
-            GameManager.Instance.Player = this;
-
-            InitializeResources();
         }
         
         private void InitializeResources()
