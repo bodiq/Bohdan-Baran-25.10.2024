@@ -4,6 +4,7 @@ using Managers;
 using TMPro;
 using UI;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Tiles
@@ -20,6 +21,9 @@ namespace Tiles
         private int _resourcesToEarn;
         private int _resourcesEarned = 0;
         private int _resourceEarnedText = 0;
+        
+        private int _remainderText = 0;
+        private int _remainderCount = 0;
         
         private ResourceType _resourceType;
     
@@ -41,6 +45,17 @@ namespace Tiles
         {
             get => _countToIncrease;
             set => _countToIncrease = value;
+        }
+        
+        public int RemainderText
+        {
+            private get => _remainderText;
+            set => _remainderText = value;
+        }
+        public int RemainderCount
+        {
+            private get => _countToIncrease;
+            set => _remainderCount = value;
         }
 
         private void Start()
@@ -68,11 +83,24 @@ namespace Tiles
         {
             if (!_isResourcesFull)
             {
-                _resourcesEarned += _countToIncrease;
-                _uiResourceIndicator.ChangeResourceAmount(_countToIncrease);
-                if (_resourcesEarned >= _resourcesToEarn)
+                if (_remainderCount != 0)
                 {
-                    _isResourcesFull = true;
+                    _resourcesEarned += _remainderCount;
+                    _uiResourceIndicator.ChangeResourceAmount(_remainderCount);
+                    if (_resourcesEarned >= _resourcesToEarn)
+                    {
+                        _isResourcesFull = true;
+                    }
+                    _remainderCount = 0;
+                }
+                else
+                {
+                    _resourcesEarned += _countToIncrease;
+                    _uiResourceIndicator.ChangeResourceAmount(_countToIncrease);
+                    if (_resourcesEarned >= _resourcesToEarn)
+                    {
+                        _isResourcesFull = true;
+                    }
                 }
             }
         }
@@ -81,15 +109,34 @@ namespace Tiles
         {
             if (!_isIndicatorFull)
             {
-                _resourceEarnedText += count;
-                resourcesEarnedText.text = _resourceEarnedText.ToString();
-                if (_resourceEarnedText >= _resourcesToEarn)
+                if (_remainderText != 0)
                 {
-                    _isIndicatorFull = true;
-
-                    if (_resourcesIndicatorManager.CheckIfResourceIndicatorsAreFull())
+                    _resourceEarnedText += _remainderText;
+                    resourcesEarnedText.text = _resourceEarnedText.ToString();
+                    if (_resourceEarnedText >= _resourcesToEarn)
                     {
-                        TileManager.Instance.UnlockTile(_resourcesIndicatorManager.MyTile); 
+                        _isIndicatorFull = true;
+
+                        if (_resourcesIndicatorManager.CheckIfResourceIndicatorsAreFull())
+                        {
+                            TileManager.Instance.UnlockTile(_resourcesIndicatorManager.MyTile); 
+                        }
+                    }
+
+                    _remainderText = 0;
+                }
+                else
+                {
+                    _resourceEarnedText += count;
+                    resourcesEarnedText.text = _resourceEarnedText.ToString();
+                    if (_resourceEarnedText >= _resourcesToEarn)
+                    {
+                        _isIndicatorFull = true;
+
+                        if (_resourcesIndicatorManager.CheckIfResourceIndicatorsAreFull())
+                        {
+                            TileManager.Instance.UnlockTile(_resourcesIndicatorManager.MyTile); 
+                        }
                     }
                 }
             }

@@ -65,9 +65,25 @@ namespace Tiles
                 if (GameManager.Instance.Player.PlayerResourceCount.TryGetValue(indicator.Key, out var value))
                 {
                     var hasToBeEarned = indicator.Value.ResourceToEarn - indicator.Value.ResourceEarned;
-                    if (hasToBeEarned > 0 && hasToBeEarned <= value)
+
+                    hasToBeEarned = Mathf.Min(hasToBeEarned, value);
+                    
+                    Debug.LogError(hasToBeEarned);
+                    
+                    if (hasToBeEarned > 0)
                     {
-                        var countToIncrease = hasToBeEarned <= 20 ? 1 : Mathf.Max(1, hasToBeEarned / 15);
+                        var countToIncrease = 0;
+                        if (hasToBeEarned <= 20)
+                        {
+                            countToIncrease = 1;
+                        }
+                        else
+                        {
+                            countToIncrease = hasToBeEarned / 20;
+                            var remainder = hasToBeEarned % 20;
+                            indicator.Value.RemainderCount = remainder;
+                            indicator.Value.RemainderText = remainder;
+                        }
                         indicator.Value.CountToIncrease = countToIncrease;
                         _resourcesIndicatorsToIncrease[indicator.Value] = countToIncrease;
                     }
@@ -99,6 +115,10 @@ namespace Tiles
             {
                 foreach (var resourcesIndicator in _resourcesIndicatorsToIncrease)
                 {
+                    if (GameManager.Instance.Player.PlayerResourceCount[resourcesIndicator.Key.ResourceType] <= 0)
+                    {
+                        continue;
+                    }
                     var resourceIndicator = resourcesIndicator;
                     if (!resourceIndicator.Key.IsResourcesFull)
                     {
