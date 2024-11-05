@@ -7,18 +7,25 @@ namespace UI
 {
     public class UIResourceIndicator : MonoBehaviour
     {
-        [SerializeField] private TextMeshProUGUI resourceCount;
+        [SerializeField] private TextMeshProUGUI resourceCountText;
         [SerializeField] private Image resourceTypeImage;
 
-        public void Initialize(int count, Sprite sprite)
+        private int _resourceCount;
+        private ResourceType _resourceType;
+        
+        public void Initialize(int count, Sprite sprite, ResourceType resourceType)
         {
-            resourceCount.text = count.ToString();
+            resourceCountText.text = count.ToString();
             resourceTypeImage.sprite = sprite;
+            _resourceCount = count;
+            _resourceType = resourceType;
         }
 
-        public void ChangeResourceAmount(int newValue)
+        public void ChangeResourceAmount(int countToReduce)
         {
-            resourceCount.text = newValue.ToString();
+            _resourceCount -= countToReduce;
+            resourceCountText.text = _resourceCount.ToString();
+            GameManager.Instance.Player.PlayerResourceCount[_resourceType] = _resourceCount;
         }
     }
 }

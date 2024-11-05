@@ -2,6 +2,7 @@ using Configs;
 using Enums;
 using Managers;
 using TMPro;
+using UI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,9 +15,12 @@ namespace Tiles
         [SerializeField] private Image resourceImage;
         [SerializeField] private ResourcesInformation resourcesInformation;
 
+        private UIResourceIndicator _uiResourceIndicator;
+        
         private int _resourcesToEarn;
         private int _resourcesEarned = 0;
         private int _resourceEarnedText = 0;
+        
         private ResourceType _resourceType;
     
         private bool _isIndicatorFull = false;
@@ -42,6 +46,11 @@ namespace Tiles
         private void Start()
         {
             _resourcesIndicatorManager = GetComponentInParent<ResourcesIndicatorManager>();
+            
+            if (UIManager.Instance.UIResourceIndicatorManager.UIResourceIndicators.TryGetValue(_resourceType, out var indicator))
+            {
+                _uiResourceIndicator = indicator;
+            }
         }
 
         public void Initialize(int countToEarn, ResourceType resourceType)
@@ -60,6 +69,7 @@ namespace Tiles
             if (!_isResourcesFull)
             {
                 _resourcesEarned += _countToIncrease;
+                _uiResourceIndicator.ChangeResourceAmount(_countToIncrease);
                 if (_resourcesEarned >= _resourcesToEarn)
                 {
                     _isResourcesFull = true;

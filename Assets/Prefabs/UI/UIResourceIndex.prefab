@@ -286,5 +286,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5182041154bf0bb419dc29382a31f6e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resourceCount: {fileID: 5534716177836593424}
+  resourceCountText: {fileID: 5534716177836593424}
   resourceTypeImage: {fileID: 3320865829832836620}

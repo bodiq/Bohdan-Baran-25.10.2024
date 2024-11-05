@@ -2,7 +2,7 @@
 
 namespace UI
 {
-    public abstract class IUIScreen : MonoBehaviour
+    public abstract class UIScreen : MonoBehaviour
     {
         public abstract void Initialize();
     }

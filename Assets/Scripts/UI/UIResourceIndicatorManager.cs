@@ -5,12 +5,12 @@ using UnityEngine;
 
 namespace UI
 {
-    public class UIResourceIndicatorManager : IUIScreen
+    public class UIResourceIndicatorManager : UIScreen
     {
         [SerializeField] private UIResourceIndicator uiResourceIndicatorPrefab;
         [SerializeField] private ResourcesInformation resourcesInformation;
 
-        private readonly Dictionary<ResourceType, UIResourceIndicator> UIResourceIndicators = new();
+        public readonly Dictionary<ResourceType, UIResourceIndicator> UIResourceIndicators = new();
 
         public override void Initialize()
         {
@@ -19,7 +19,7 @@ namespace UI
                 if (resourcesInformation.resourcesInformation.TryGetValue(resource.Key, out var sprite))
                 {
                     var indicator = Instantiate(uiResourceIndicatorPrefab, transform);
-                    indicator.Initialize(resource.Value, sprite);
+                    indicator.Initialize(resource.Value, sprite, resource.Key);
                     UIResourceIndicators.Add(resource.Key, indicator);
                 }
             }

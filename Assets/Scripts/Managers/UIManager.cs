@@ -9,7 +9,11 @@ namespace Managers
     {
         public static UIManager Instance { get; private set; }
         
-        [SerializeField] private List<IUIScreen> uiScreens = new();
+        [SerializeField] private List<UIScreen> uiScreens = new();
+
+        private UIResourceIndicatorManager _uiResourceIndicatorManager;
+
+        public UIResourceIndicatorManager UIResourceIndicatorManager => _uiResourceIndicatorManager;
 
         private void Awake()
         {
@@ -21,6 +25,8 @@ namespace Managers
             {
                 Instance = this;
             }
+            
+            GetScreens();
         }
 
         public void Initialize()
@@ -29,6 +35,11 @@ namespace Managers
             {
                 uiScreen.Initialize();
             }
+        }
+
+        private void GetScreens()
+        {
+            _uiResourceIndicatorManager = Configs.ConfigHelper.GetUIScreen<UIResourceIndicatorManager>(uiScreens);
         }
     }
 }

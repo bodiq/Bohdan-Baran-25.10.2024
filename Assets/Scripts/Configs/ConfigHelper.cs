@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UI;
 using UnityEngine;
 
 namespace Configs
@@ -14,6 +15,11 @@ namespace Configs
         public static int RoundToNearestTen(int number)
         {
             return Mathf.RoundToInt(number / 10) * 10;
+        }
+        
+        public static TUIScreen GetUIScreen<TUIScreen>(List<UIScreen> screens) where TUIScreen : UIScreen
+        {
+            return screens.Find(screen => screen is TUIScreen) as TUIScreen;
         }
     }
 }
