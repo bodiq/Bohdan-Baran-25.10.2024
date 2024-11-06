@@ -8,23 +8,10 @@ namespace Managers
 {
     public class TileManager : MonoBehaviour
     {
+        [SerializeField] private GenerationMap generationMap;
         public static TileManager Instance { get; private set; }
-
-        [SerializeField] private Tile tilePrefab;
-        [SerializeField] private int columnsMap;
-        [SerializeField] private int rowsMap;
-        [SerializeField] private float tileSize;
-        
-        [SerializeField] private float maxHeight = 1.0f;  // Максимальна висота для тайлів
-        [SerializeField] private float minHeight = 0.0f;  // Мінімальна висота для тайлів
-        [SerializeField] private float maxHeightDifference = 0.5f;
         
         private Tile[,] _tiles;
-
-        private static readonly float VerticalDistance = 0.75f;
-        private static readonly float CoefficientPlacement = 0.866f;
-        private static readonly float TileXOffsetOddRow = 0.25f;
-        private static readonly float HalfUnit = 0.5f;
 
         private readonly List<Tile> _openTiles = new ();
 
@@ -39,99 +26,13 @@ namespace Managers
                 Instance = this;
             }
             
-            GenerateHexTiles();
+            _tiles = generationMap.GenerateHexTiles();
         }
 
         private void Start()
         {
-            SetTileDependencies();
+            generationMap.SetTileDependencies();
             UnlockTile(_tiles[0, 0]);
-        }
-
-        private void GenerateHexTiles()
-        {
-            _tiles = new Tile[rowsMap, columnsMap];
-
-            for (var i = 0; i < rowsMap; i++)
-            {
-                for (var j = 0; j < columnsMap; j++)
-                {
-                    
-                    var xOffset = j * tileSize * CoefficientPlacement; 
-                    var zOffset = i * tileSize * VerticalDistance;   
-                    
-                    if (i % 2 == 1)
-                    {
-                        xOffset += tileSize * HalfUnit - TileXOffsetOddRow;
-                    }
-                    
-                    float height = Random.Range(minHeight, maxHeight);
-
-                    // Установка базового тайла на рівень нуля
-                    if (i == 0 && j == 0)
-                    {
-                        height = 0;
-                    }
-                    else
-                    {
-                        // Перевірка висоти сусідніх тайлів для обмеження перепадів
-                        float averageNeighborHeight = GetAverageNeighborHeight(i, j);
-                        if (Mathf.Abs(height - averageNeighborHeight) > maxHeightDifference)
-                        {
-                            height = averageNeighborHeight + Mathf.Sign(height - averageNeighborHeight) * maxHeightDifference;
-                        }
-                    }
-
-                    var position = new Vector3(xOffset, height, zOffset);
-                    var tile = Instantiate(tilePrefab, position, Quaternion.identity, transform);
-                    _tiles[i, j] = tile;
-                }
-            }
-        }
-        
-        private float GetAverageNeighborHeight(int i, int j)
-        {
-            float totalHeight = 0f;
-            int count = 0;
-
-            // Перевірка сусідніх тайлів та обчислення їхньої висоти
-            if (i > 0) { totalHeight += _tiles[i - 1, j]?.transform.position.y ?? minHeight; count++; }
-            if (j > 0) { totalHeight += _tiles[i, j - 1]?.transform.position.y ?? minHeight; count++; }
-            if (i > 0 && j > 0) { totalHeight += _tiles[i - 1, j - 1]?.transform.position.y ?? minHeight; count++; }
-            if (i > 0 && j < columnsMap - 1) { totalHeight += _tiles[i - 1, j + 1]?.transform.position.y ?? minHeight; count++; }
-
-            return count > 0 ? totalHeight / count : minHeight;
-        }
-
-        private void SetTileDependencies()
-        {
-            for (var i = 0; i < rowsMap; i++)
-            {
-                for (var j = 0; j < columnsMap; j++)
-                {
-                    var tile = _tiles[i, j];
-
-                    tile.neighbours[0] = GetNeighbour(i - 1, j - (i % 2 == 0 ? 1 : 0), j > 0 || i % 2 == 1); // Нижній лівий
-                    tile.neighbours[1] = GetNeighbour(i - 1, j + (i % 2 == 1 ? 1 : 0), j < columnsMap - 1 || i % 2 == 0); // Нижній правий
-                    tile.neighbours[2] = GetNeighbour(i, j - 1, j > 0); // Лівий
-                    tile.neighbours[3] = GetNeighbour(i, j + 1, j < columnsMap - 1); // Правий
-                    tile.neighbours[4] = GetNeighbour(i + 1, j - (i % 2 == 0 ? 1 : 0), j > 0 || i % 2 == 1); // Верхній лівий
-                    tile.neighbours[5] = GetNeighbour(i + 1, j + (i % 2 == 1 ? 1 : 0), j < columnsMap - 1 || i % 2 == 0); // Верхній правий
-                    
-                    tile.ResourcesIndicatorManager.Initialize();
-                    tile.TileObjects.SetActive(false);
-
-                    foreach (var tileAvailableIndicator in tile.AvailableIndicators)
-                    {
-                        tileAvailableIndicator.SetIndicatorDependence(tile);
-                    }
-                }
-            }
-        }
-
-        private Tile GetNeighbour(int i, int j, bool condition)
-        {
-            return condition && i >= 0 && i < rowsMap && j >= 0 && j < columnsMap ? _tiles[i, j] : null;
         }
 
         public void UnlockTile(Tile tile)
