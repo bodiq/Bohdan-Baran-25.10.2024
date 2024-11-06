@@ -44,9 +44,7 @@ namespace Tiles
 
         public void ActivateIndicator()
         {
-            var position = transform.position;
-            position = new Vector3(position.x, 0f, position.z);
-            transform.position = position;
+            gameObject.SetActive(true);
             _nextTileToOpen.ReserveTile();
             _nextTileToOpen.ResourcesIndicatorManager.gameObject.SetActive(true);
             _nextTileToOpen.ResourcesIndicatorManager.MyTile = _nextTileToOpen;

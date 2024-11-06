@@ -15,6 +15,10 @@ namespace Managers
         [SerializeField] private int rowsMap;
         [SerializeField] private float tileSize;
         
+        [SerializeField] private float maxHeight = 1.0f;  // Максимальна висота для тайлів
+        [SerializeField] private float minHeight = 0.0f;  // Мінімальна висота для тайлів
+        [SerializeField] private float maxHeightDifference = 0.5f;
+        
         private Tile[,] _tiles;
 
         private static readonly float VerticalDistance = 0.75f;
@@ -60,12 +64,43 @@ namespace Managers
                     {
                         xOffset += tileSize * HalfUnit - TileXOffsetOddRow;
                     }
+                    
+                    float height = Random.Range(minHeight, maxHeight);
 
-                    var position = new Vector3(xOffset, 0, zOffset);
+                    // Установка базового тайла на рівень нуля
+                    if (i == 0 && j == 0)
+                    {
+                        height = 0;
+                    }
+                    else
+                    {
+                        // Перевірка висоти сусідніх тайлів для обмеження перепадів
+                        float averageNeighborHeight = GetAverageNeighborHeight(i, j);
+                        if (Mathf.Abs(height - averageNeighborHeight) > maxHeightDifference)
+                        {
+                            height = averageNeighborHeight + Mathf.Sign(height - averageNeighborHeight) * maxHeightDifference;
+                        }
+                    }
+
+                    var position = new Vector3(xOffset, height, zOffset);
                     var tile = Instantiate(tilePrefab, position, Quaternion.identity, transform);
                     _tiles[i, j] = tile;
                 }
             }
+        }
+        
+        private float GetAverageNeighborHeight(int i, int j)
+        {
+            float totalHeight = 0f;
+            int count = 0;
+
+            // Перевірка сусідніх тайлів та обчислення їхньої висоти
+            if (i > 0) { totalHeight += _tiles[i - 1, j]?.transform.position.y ?? minHeight; count++; }
+            if (j > 0) { totalHeight += _tiles[i, j - 1]?.transform.position.y ?? minHeight; count++; }
+            if (i > 0 && j > 0) { totalHeight += _tiles[i - 1, j - 1]?.transform.position.y ?? minHeight; count++; }
+            if (i > 0 && j < columnsMap - 1) { totalHeight += _tiles[i - 1, j + 1]?.transform.position.y ?? minHeight; count++; }
+
+            return count > 0 ? totalHeight / count : minHeight;
         }
 
         private void SetTileDependencies()

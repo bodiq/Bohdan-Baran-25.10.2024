@@ -6,6 +6,8 @@ namespace Player
     public class PlayerMovement : MonoBehaviour
     {
         [SerializeField] private float moveSpeed;
+        [SerializeField] private float gravity = -9.81f; // Гравітація, яка буде діяти вниз
+        private Vector3 velocity;
         
         [SerializeField] private Animator animator;
 
@@ -39,6 +41,17 @@ namespace Player
             var movement = _moveDirection.normalized * (moveSpeed * Time.deltaTime);
 
             _characterController.Move(movement);
+            
+            if (!_characterController.isGrounded)
+            {
+                velocity.y += gravity * Time.deltaTime;
+            }
+            else
+            {
+                velocity.y = -2f;
+            }
+            
+            _characterController.Move(velocity * Time.deltaTime);
 
             if (_moveDirection != Vector3.zero)
             {
