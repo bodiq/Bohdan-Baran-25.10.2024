@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6491837665287841998}
   m_Layer: 0
   m_Name: TilesObjects
-  m_TagString: Untagged
+  m_TagString: Tile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -70,7 +70,7 @@ GameObject:
   - component: {fileID: 2798937259682695843}
   m_Layer: 0
   m_Name: Hex_Grass
-  m_TagString: Untagged
+  m_TagString: Tile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
