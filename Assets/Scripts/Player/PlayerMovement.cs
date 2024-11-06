@@ -7,6 +7,7 @@ namespace Player
     {
         [SerializeField] private float moveSpeed;
         [SerializeField] private float gravity = -9.81f; // Гравітація, яка буде діяти вниз
+        
         private Vector3 velocity;
         
         [SerializeField] private Animator animator;
@@ -37,10 +38,8 @@ namespace Player
                 _moveDirection = Vector3.forward * _inputJoystick.Vertical + Vector3.right * _inputJoystick.Horizontal;
                 animator.SetFloat(Speed, _moveDirection.magnitude);
             }
-
+            
             var movement = _moveDirection.normalized * (moveSpeed * Time.deltaTime);
-
-            _characterController.Move(movement);
             
             if (!_characterController.isGrounded)
             {
@@ -50,13 +49,16 @@ namespace Player
             {
                 velocity.y = -2f;
             }
-            
-            _characterController.Move(velocity * Time.deltaTime);
 
+            movement.y = velocity.y * Time.deltaTime;
+            
+            _characterController.Move(movement);
+            
             if (_moveDirection != Vector3.zero)
             {
                 transform.rotation = Quaternion.LookRotation(_moveDirection);
             }
+
         }
     }
 }
