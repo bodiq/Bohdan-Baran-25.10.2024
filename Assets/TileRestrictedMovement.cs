@@ -3,16 +3,31 @@ using UnityEngine;
 
 public class TileRestrictedMovement : MonoBehaviour
 {
+    [SerializeField] private float powerMove = 15f;
+    
     private Vector3 _lastValidPosition;
+    private CharacterController _characterController;
+    private bool _isOnTile;
+
+    public bool IsOnTile => _isOnTile;
 
     private void Start()
     {
         _lastValidPosition = transform.position; 
+        _characterController = GetComponent<CharacterController>();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         CheckIfOnTile();
+
+        if (!_isOnTile)
+        {
+            var position = transform.position;
+            var direction = (_lastValidPosition - position).normalized;
+            var distance = Vector3.Distance(position, _lastValidPosition);
+            _characterController.Move(direction * Mathf.Min(Time.deltaTime * powerMove, distance));
+        }
     }
 
     private void CheckIfOnTile()
@@ -24,10 +39,11 @@ public class TileRestrictedMovement : MonoBehaviour
             if (hit.collider.CompareTag("Tile"))
             {
                 _lastValidPosition = transform.position;
+                _isOnTile = true;
             }
             else
             {
-                transform.position = Vector3.Lerp(transform.position, _lastValidPosition, Time.fixedDeltaTime * 15f);
+                _isOnTile = false;
             }
         }
     }

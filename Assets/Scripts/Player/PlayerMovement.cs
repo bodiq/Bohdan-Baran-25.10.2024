@@ -6,11 +6,11 @@ namespace Player
     public class PlayerMovement : MonoBehaviour
     {
         [SerializeField] private float moveSpeed;
-        [SerializeField] private float gravity = -9.81f; // Гравітація, яка буде діяти вниз
-        
-        private Vector3 velocity;
-        
+        [SerializeField] private float gravity = -9.81f;
         [SerializeField] private Animator animator;
+        [SerializeField] private TileRestrictedMovement restrictedMovement;
+        
+        private Vector3 _velocity;
 
         private Joystick _inputJoystick;
         private CharacterController _characterController;
@@ -33,32 +33,34 @@ namespace Player
 
         public void Move()
         {
-            if (_inputJoystick != null)
+            if (restrictedMovement.IsOnTile)
             {
-                _moveDirection = Vector3.forward * _inputJoystick.Vertical + Vector3.right * _inputJoystick.Horizontal;
-                animator.SetFloat(Speed, _moveDirection.magnitude);
-            }
+                if (_inputJoystick != null)
+                {
+                    _moveDirection = Vector3.forward * _inputJoystick.Vertical + Vector3.right * _inputJoystick.Horizontal;
+                    animator.SetFloat(Speed, _moveDirection.magnitude);
+                }
             
-            var movement = _moveDirection.normalized * (moveSpeed * Time.deltaTime);
+                var movement = _moveDirection.normalized * (moveSpeed * Time.deltaTime);
             
-            if (!_characterController.isGrounded)
-            {
-                velocity.y += gravity * Time.deltaTime;
-            }
-            else
-            {
-                velocity.y = -2f;
-            }
+                if (!_characterController.isGrounded)
+                {
+                    _velocity.y += gravity * Time.deltaTime;
+                }
+                else
+                {
+                    _velocity.y = -2f;
+                }
 
-            movement.y = velocity.y * Time.deltaTime;
+                movement.y = _velocity.y * Time.deltaTime;
             
-            _characterController.Move(movement);
+                _characterController.Move(movement);
             
-            if (_moveDirection != Vector3.zero)
-            {
-                transform.rotation = Quaternion.LookRotation(_moveDirection);
+                if (_moveDirection != Vector3.zero)
+                {
+                    transform.rotation = Quaternion.LookRotation(_moveDirection);
+                }
             }
-
         }
     }
 }

@@ -63,6 +63,7 @@ MonoBehaviour:
   moveSpeed: 5
   gravity: -9.81
   animator: {fileID: 8897448603865578192}
+  restrictedMovement: {fileID: 2989836178674500121}
 --- !u!143 &7668084973046809440
 CharacterController:
   m_ObjectHideFlags: 0
@@ -101,6 +102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7da11642bf5152642bc6b266b855adba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  powerMove: 15
 --- !u!1001 &3031067636092061505
 PrefabInstance:
   m_ObjectHideFlags: 0
