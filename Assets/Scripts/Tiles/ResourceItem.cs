@@ -34,7 +34,7 @@ namespace Tiles
             transform.rotation = Quaternion.Euler(0f, randomYOffsetRotation, 0f);
         }
 
-        public void TriggerResourceFly(Vector3 startPosition, Vector3 endPosition, ResourcesIndicator resourcesIndicator, int count)
+        public void TriggerResourceFly(Vector3 startPosition, Vector3 endPosition, ResourcesIndicator resourcesIndicator, int count, int remainder = 0)
         {
             transform.position = startPosition + _randomPositionOffset;
 
@@ -46,7 +46,7 @@ namespace Tiles
                 .OnComplete(() =>
                 {
                     ResourcePoolManager.Instance.ReturnResource(resourcesIndicator.ResourceType, this);
-                    resourcesIndicator.IncreaseResourceTextAmount(count);
+                    resourcesIndicator.IncreaseResourceTextAmount(count, remainder);
                 });
         }
 

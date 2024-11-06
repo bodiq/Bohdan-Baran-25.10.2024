@@ -21,7 +21,8 @@ namespace Tiles
         private static readonly float IntervalBetweenSpawnResources = 0.08f;
         private static readonly WaitForSeconds WaitBetweenSpawnResources = new (IntervalBetweenSpawnResources);
 
-        private Dictionary<ResourcesIndicator, int> _resourcesIndicatorsToIncrease = new();
+        private readonly Dictionary<ResourcesIndicator, int> _resourcesTextIndicatorsToIncrease = new();
+        private readonly Dictionary<ResourcesIndicator, int> _resourcesTextRemainderToIncrease = new();
         
         public void SetIndicatorDependence(Tile tile)
         {
@@ -56,7 +57,8 @@ namespace Tiles
             if (_isCollecting)
                 return; 
             
-            _resourcesIndicatorsToIncrease.Clear();
+            _resourcesTextIndicatorsToIncrease.Clear();
+            _resourcesTextRemainderToIncrease.Clear();
 
             foreach (var indicator in _nextTileToOpen.ResourcesIndicatorManager.ActiveResourceIndicators)
             {
@@ -80,10 +82,10 @@ namespace Tiles
                             countToIncrease = hasToBeEarned / 20;
                             var remainder = hasToBeEarned % 20;
                             indicator.Value.RemainderCount = remainder;
-                            indicator.Value.RemainderText = remainder;
+                            _resourcesTextRemainderToIncrease.Add(indicator.Value, remainder);
                         }
                         indicator.Value.CountToIncrease = countToIncrease;
-                        _resourcesIndicatorsToIncrease[indicator.Value] = countToIncrease;
+                        _resourcesTextIndicatorsToIncrease[indicator.Value] = countToIncrease;
                     }
                 }
             }
@@ -111,7 +113,7 @@ namespace Tiles
 
             while (!_nextTileToOpen.ResourcesIndicatorManager.CheckIfResourceIndicatorsAreFull())
             {
-                foreach (var resourcesIndicator in _resourcesIndicatorsToIncrease)
+                foreach (var resourcesIndicator in _resourcesTextIndicatorsToIncrease)
                 {
                     if (GameManager.Instance.Player.PlayerResourceCount[resourcesIndicator.Key.ResourceType] <= 0)
                     {
@@ -123,7 +125,13 @@ namespace Tiles
                         resourceIndicator.Key.IncreaseResourceCount();
                         var resource = ResourcePoolManager.Instance.GetResource(resourceIndicator.Key.ResourceType);
                         resource.gameObject.SetActive(true);
-                        resource.TriggerResourceFly(GameManager.Instance.Player.transform.position, _nextTileToOpen.ResourcesEndPoint.position, resourceIndicator.Key, resourcesIndicator.Value);
+                        var remainder = 0;
+                        if (_resourcesTextRemainderToIncrease.TryGetValue(resourceIndicator.Key, out var value))
+                        {
+                            remainder = value;
+                            _resourcesTextRemainderToIncrease.Remove(resourceIndicator.Key);
+                        }
+                        resource.TriggerResourceFly(GameManager.Instance.Player.transform.position, _nextTileToOpen.ResourcesEndPoint.position, resourceIndicator.Key, resourcesIndicator.Value, remainder);
                     }
                 }
 

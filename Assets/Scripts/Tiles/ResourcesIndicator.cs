@@ -105,13 +105,13 @@ namespace Tiles
             }
         }
 
-        public void IncreaseResourceTextAmount(int count)
+        public void IncreaseResourceTextAmount(int count, int remainder = 0)
         {
             if (!_isIndicatorFull)
             {
-                if (_remainderText != 0)
+                if (remainder != 0)
                 {
-                    _resourceEarnedText += _remainderText;
+                    _resourceEarnedText += remainder;
                     resourcesEarnedText.text = _resourceEarnedText.ToString();
                     if (_resourceEarnedText >= _resourcesToEarn)
                     {
