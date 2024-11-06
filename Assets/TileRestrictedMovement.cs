@@ -27,7 +27,7 @@ public class TileRestrictedMovement : MonoBehaviour
             }
             else
             {
-                transform.position = _lastValidPosition;
+                transform.position = Vector3.Lerp(transform.position, _lastValidPosition, Time.fixedDeltaTime * 15f);
             }
         }
     }
