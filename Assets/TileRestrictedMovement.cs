@@ -7,6 +7,7 @@ public class TileRestrictedMovement : MonoBehaviour
     
     private Vector3 _lastValidPosition;
     private CharacterController _characterController;
+    private PlayerCharacter _playerCharacter;
     private bool _isOnTile;
 
     public bool IsOnTile => _isOnTile;
@@ -15,6 +16,7 @@ public class TileRestrictedMovement : MonoBehaviour
     {
         _lastValidPosition = transform.position; 
         _characterController = GetComponent<CharacterController>();
+        _playerCharacter = GetComponent<PlayerCharacter>();
     }
 
     private void Update()
@@ -40,10 +42,12 @@ public class TileRestrictedMovement : MonoBehaviour
             {
                 _lastValidPosition = transform.position;
                 _isOnTile = true;
+                _playerCharacter.StepDustParticle.SetActive(true);
             }
             else
             {
                 _isOnTile = false;
+                _playerCharacter.StepDustParticle.SetActive(false);
             }
         }
     }

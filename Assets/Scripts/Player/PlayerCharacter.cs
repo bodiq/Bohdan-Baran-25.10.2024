@@ -10,9 +10,13 @@ namespace Player
 {
     public class PlayerCharacter : MonoBehaviour
     {
+        [SerializeField] private GameObject stepDustParticle;
+        
         private PlayerMovement _playerMovement;
 
         public Dictionary<ResourceType, int> PlayerResourceCount = new();
+
+        public GameObject StepDustParticle => stepDustParticle;
 
         private void Awake()
         {
