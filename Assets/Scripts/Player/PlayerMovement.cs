@@ -20,6 +20,8 @@ namespace Player
 
         private const string AnimationSpeedParameterName = "Speed";
 
+        private float _baseMoveSpeed = 3f;
+
         private void Start()
         {
             _inputJoystick = GameManager.Instance?.Joystick;
@@ -40,7 +42,8 @@ namespace Player
                     _moveDirection = Vector3.forward * _inputJoystick.Vertical + Vector3.right * _inputJoystick.Horizontal;
                     animator.SetFloat(Speed, _moveDirection.magnitude);
                 }
-            
+                
+                animator.speed = Mathf.Clamp(moveSpeed / _baseMoveSpeed, 0.5f, 2f); // Межі: від 0.5 до 2x швидкості
                 var movement = _moveDirection.normalized * (moveSpeed * Time.deltaTime);
             
                 if (!_characterController.isGrounded)
