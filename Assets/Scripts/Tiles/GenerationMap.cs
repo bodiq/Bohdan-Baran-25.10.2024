@@ -93,6 +93,7 @@ public class GenerationMap : MonoBehaviour
                     
                 tile.ResourcesIndicatorManager.Initialize();
                 tile.TileObjects.SetActive(false);
+                tile.TileObjects.transform.localScale = Vector3.zero;
 
                 foreach (var tileAvailableIndicator in tile.AvailableIndicators)
                 {

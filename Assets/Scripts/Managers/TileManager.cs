@@ -32,7 +32,14 @@ namespace Managers
         private void Start()
         {
             generationMap.SetTileDependencies();
-            UnlockTile(_tiles[0, 0]);
+            UnlockFirstTile();
+        }
+
+        private void UnlockFirstTile()
+        {
+            var firstTile = _tiles[0, 0];
+            firstTile.TileObjects.transform.localScale = Vector3.one;
+            UnlockTile(firstTile);
         }
 
         public void UnlockTile(Tile tile)

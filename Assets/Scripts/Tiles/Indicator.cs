@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Constants;
+using DG.Tweening;
 using Managers;
 using UnityEngine;
 
@@ -17,10 +19,7 @@ namespace Tiles
         private bool _isCollecting = false;
 
         private Coroutine _collectingCoroutine;
-
-        private static readonly float IntervalBetweenSpawnResources = 0.08f;
-        private static readonly WaitForSeconds WaitBetweenSpawnResources = new (IntervalBetweenSpawnResources);
-
+        
         private readonly Dictionary<ResourcesIndicator, int> _resourcesTextIndicatorsToIncrease = new();
         private readonly Dictionary<ResourcesIndicator, int> _resourcesTextRemainderToIncrease = new();
         
@@ -34,7 +33,10 @@ namespace Tiles
                 if (_nextTileToOpen == null || _nextTileToOpen.IsTileUnlocked)
                 {
                     gameObject.SetActive(false);
-                    //myTile.AvailableIndicators.Remove(this);
+                }
+                else
+                {
+                    transform.localScale = Vector3.zero;
                 }
             }
             else
@@ -47,9 +49,13 @@ namespace Tiles
         {
             gameObject.SetActive(true);
             _nextTileToOpen.ReserveTile();
-            _nextTileToOpen.ResourcesIndicatorManager.gameObject.SetActive(true);
-            _nextTileToOpen.ResourcesIndicatorManager.MyTile = _nextTileToOpen;
-            _nextTileToOpen.MyIndicator = this;
+            
+            transform.DOScale(IndicatorConstants.AnimationEndScale, IndicatorConstants.ActivationAnimationDuration).OnComplete(() =>
+            {
+                _nextTileToOpen.ResourcesIndicatorManager.gameObject.SetActive(true);
+                _nextTileToOpen.ResourcesIndicatorManager.MyTile = _nextTileToOpen;
+                _nextTileToOpen.MyIndicator = this;
+            });
         }
 
         private void OnTriggerEnter(Collider other)
@@ -134,7 +140,7 @@ namespace Tiles
                     }
                 }
 
-                yield return WaitBetweenSpawnResources;
+                yield return IndicatorConstants.WaitBetweenSpawnResources;
             }
             _isCollecting = false;
         }

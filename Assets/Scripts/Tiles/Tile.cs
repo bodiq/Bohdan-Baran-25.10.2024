@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using Managers;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -15,6 +16,8 @@ namespace Tiles
         [SerializeField] private Transform resourcesEndPoint;
         
         [HideInInspector] public Tile[] neighbours = new Tile[6];
+
+        private static readonly float TileAnimationOpenDuration = 0.2f;
         
         private bool _isUnlocked = false;
         private bool _isReserved = false;
@@ -39,24 +42,27 @@ namespace Tiles
         {
             ResourcesIndicatorManager.gameObject.SetActive(false);
             UnlockTile();
-            
-            if (AvailableIndicators == null || AvailableIndicators.Count == 0)
-            {
-                Debug.LogWarning("No available indicators to activate.");
-                return;
-            }
 
-            var indicator = GetRandomAvailableIndicator();
+            tilesObjects.transform.DOScale(Vector3.one, TileAnimationOpenDuration).OnComplete(() =>
+            {
+                if (AvailableIndicators == null || AvailableIndicators.Count == 0)
+                {
+                    Debug.LogWarning("No available indicators to activate.");
+                    return;
+                }
 
-            if (indicator != null)
-            {
-                indicator.ActivateIndicator();
-            }
-            else
-            {
-                Debug.LogError("No indicators available on tile, null");
-                TileManager.Instance.UnlockRandomOpenTileIndicator();
-            }
+                var indicator = GetRandomAvailableIndicator();
+
+                if (indicator != null)
+                {
+                    indicator.ActivateIndicator();
+                }
+                else
+                {
+                    Debug.LogWarning("No indicators available on tile, null");
+                    TileManager.Instance.UnlockRandomOpenTileIndicator();
+                }
+            });
         }
         
         public void UnlockTile()
