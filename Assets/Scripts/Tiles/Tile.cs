@@ -23,6 +23,7 @@ namespace Tiles
         private bool _isReserved = false;
 
         private Indicator _myIndicatorResp;
+        private Tween _openTileTween;
 
         public List<Indicator> AvailableIndicators => indicators;
         public ResourcesIndicatorManager ResourcesIndicatorManager => resourcesIndicatorManager;
@@ -43,7 +44,7 @@ namespace Tiles
             ResourcesIndicatorManager.gameObject.SetActive(false);
             UnlockTile();
 
-            tilesObjects.transform.DOScale(Vector3.one, TileAnimationOpenDuration).OnComplete(() =>
+            _openTileTween = tilesObjects.transform.DOScale(Vector3.one, TileAnimationOpenDuration).OnComplete(() =>
             {
                 if (AvailableIndicators == null || AvailableIndicators.Count == 0)
                 {
@@ -81,6 +82,11 @@ namespace Tiles
             var validIndicators = AvailableIndicators.Where(indicator => indicator.NextTileToOpen != null && !indicator.NextTileToOpen.IsTileUnlocked && !indicator.NextTileToOpen.IsTileReserved).ToList();
 
             return validIndicators.Count > 0 ? validIndicators[Random.Range(0, validIndicators.Count)] : null;
+        }
+
+        private void OnDisable()
+        {
+            _openTileTween?.Kill();
         }
     }
 }

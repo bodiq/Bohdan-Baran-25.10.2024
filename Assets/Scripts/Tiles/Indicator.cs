@@ -19,6 +19,7 @@ namespace Tiles
         private bool _isCollecting = false;
 
         private Coroutine _collectingCoroutine;
+        private Tween _activationAnimation;
         
         private readonly Dictionary<ResourcesIndicator, int> _resourcesTextIndicatorsToIncrease = new();
         private readonly Dictionary<ResourcesIndicator, int> _resourcesTextRemainderToIncrease = new();
@@ -50,7 +51,7 @@ namespace Tiles
             gameObject.SetActive(true);
             _nextTileToOpen.ReserveTile();
             
-            transform.DOScale(IndicatorConstants.AnimationEndScale, IndicatorConstants.ActivationAnimationDuration).OnComplete(() =>
+            _activationAnimation = transform.DOScale(IndicatorConstants.AnimationEndScale, IndicatorConstants.ActivationAnimationDuration).OnComplete(() =>
             {
                 _nextTileToOpen.ResourcesIndicatorManager.gameObject.SetActive(true);
                 _nextTileToOpen.ResourcesIndicatorManager.MyTile = _nextTileToOpen;
@@ -145,5 +146,14 @@ namespace Tiles
             _isCollecting = false;
         }
 
+        private void OnDisable()
+        {
+            _activationAnimation?.Kill();
+            if (_collectingCoroutine != null)
+            {
+                StopCoroutine(_collectingCoroutine);
+                _collectingCoroutine = null;
+            }
+        }
     }
 }

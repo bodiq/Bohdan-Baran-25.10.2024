@@ -77,7 +77,7 @@ namespace Managers
             }
             else
             {
-                Debug.LogError("All tiles are opened");
+                Debug.LogWarning("All tiles are opened");
             }
         }
     }
