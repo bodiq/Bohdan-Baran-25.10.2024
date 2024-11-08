@@ -1,5 +1,6 @@
 ﻿using DG.Tweening;
 using Managers;
+using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -9,8 +10,11 @@ namespace Tiles
     {
         private static readonly Vector3 RandomSpawnPositionRange = new (0.5f, 0.5f, 0.5f);
         private static readonly Vector3 RandomSpawnRotationRange = new (0, 360, 0);
-        private static readonly Vector3 RandomEndPositionFlyRange = new (1.2f, 0f, 1.2f);
+        private static readonly Vector3 RandomEndPositionFlyRange = new (1.4f, 0f, 1.4f);
 
+        private static readonly float JumpPower = 2.5f;
+        private static readonly float JumpDurationToFirstPos = 0.7f;
+        private static readonly float JumpDurationToSecondPos = 0.2f;
         private static readonly float EndPositionHeightOffset = 0.7f;
         
         private Vector3 _randomPositionOffset;
@@ -41,8 +45,8 @@ namespace Tiles
             var firstEndPosition = endPosition + _randomEndPositionOffset;
 
             _jumpTween = DOTween.Sequence()
-                .Append(transform.DOJump(firstEndPosition, 2.5f, 1, 0.7f).SetEase(Ease.Linear))
-                .Append(transform.DOMove(endPosition, 0.2f))
+                .Append(transform.DOJump(firstEndPosition, JumpPower, 1, JumpDurationToFirstPos).SetEase(Ease.Linear))
+                .Append(transform.DOMove(endPosition, JumpDurationToSecondPos))
                 .OnComplete(() =>
                 {
                     ResourcePoolManager.Instance.ReturnResource(resourcesIndicator.ResourceType, this);

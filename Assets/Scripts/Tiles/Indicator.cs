@@ -68,7 +68,6 @@ namespace Tiles
 
                     hasToBeEarned = Mathf.Min(hasToBeEarned, value);
                     
-                    Debug.LogError(hasToBeEarned);
                     
                     if (hasToBeEarned > 0)
                     {

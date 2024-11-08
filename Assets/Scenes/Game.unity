@@ -282,7 +282,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc3c1d8ac7e15dd4a8e6f095c3e10995, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 787650518}
   offsetDistance: 4
   smoothTime: 1
   maxTransitionSpeed: 4
@@ -347,9 +346,9 @@ MonoBehaviour:
   m_LookaheadTime: 0.5
   m_LookaheadSmoothing: 1.5
   m_LookaheadIgnoreY: 1
-  m_XDamping: 3
-  m_YDamping: 3
-  m_ZDamping: 3
+  m_XDamping: 6
+  m_YDamping: 6
+  m_ZDamping: 6
   m_TargetMovementOnly: 1
   m_ScreenX: 0.5005208
   m_ScreenY: 0.5

@@ -22,8 +22,8 @@ namespace Tiles
         private int _resourcesEarned = 0;
         private int _resourceEarnedText = 0;
         
-        private int _remainderText = 0;
         private int _remainderCount = 0;
+        private int _countToIncrease;
         
         private ResourceType _resourceType;
     
@@ -31,8 +31,6 @@ namespace Tiles
         private bool _isResourcesFull = false;
 
         private ResourcesIndicatorManager _resourcesIndicatorManager;
-
-        private int _countToIncrease;
 
         public bool IsIndicatorFull => _isIndicatorFull;
         public bool IsResourcesFull => _isResourcesFull;
@@ -43,15 +41,10 @@ namespace Tiles
 
         public int CountToIncrease
         {
-            get => _countToIncrease;
+            private get => _countToIncrease;
             set => _countToIncrease = value;
         }
-        
-        public int RemainderText
-        {
-            private get => _remainderText;
-            set => _remainderText = value;
-        }
+
         public int RemainderCount
         {
             private get => _countToIncrease;
@@ -122,8 +115,6 @@ namespace Tiles
                             TileManager.Instance.UnlockTile(_resourcesIndicatorManager.MyTile); 
                         }
                     }
-
-                    _remainderText = 0;
                 }
                 else
                 {
