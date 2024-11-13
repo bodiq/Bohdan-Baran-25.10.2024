@@ -1,16 +1,16 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Constants;
 using DG.Tweening;
 using Managers;
+using ScriptableObjects;
 using UnityEngine;
 
 namespace Tiles
 {
     public class Indicator : MonoBehaviour
     {
+        [SerializeField] private IndicatorInformation indicatorInformation;
+        
         private Tile _nextTileToOpen;
         private Tile _myTile;
 
@@ -51,7 +51,7 @@ namespace Tiles
             gameObject.SetActive(true);
             _nextTileToOpen.ReserveTile();
             
-            _activationAnimation = transform.DOScale(IndicatorConstants.AnimationEndScale, IndicatorConstants.ActivationAnimationDuration).OnComplete(() =>
+            _activationAnimation = transform.DOScale(indicatorInformation.AnimationEndScale, indicatorInformation.ActivationAnimationDuration).OnComplete(() =>
             {
                 _nextTileToOpen.ResourcesIndicatorManager.gameObject.SetActive(true);
                 _nextTileToOpen.ResourcesIndicatorManager.MyTile = _nextTileToOpen;
@@ -141,7 +141,7 @@ namespace Tiles
                     }
                 }
 
-                yield return IndicatorConstants.WaitBetweenSpawnResources;
+                yield return indicatorInformation.WaitBetweenSpawnResources;
             }
             _isCollecting = false;
         }

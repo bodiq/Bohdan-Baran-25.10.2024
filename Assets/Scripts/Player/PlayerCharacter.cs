@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
-using Constants;
-using Data;
 using Enums;
+using ScriptableObjects;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -11,6 +9,7 @@ namespace Player
     public class PlayerCharacter : MonoBehaviour
     {
         [SerializeField] private GameObject stepDustParticle;
+        [SerializeField] private ResourcesInformation resourcesInformation;
         
         private PlayerMovement _playerMovement;
 
@@ -35,7 +34,7 @@ namespace Player
         
         private void InitializeResources()
         {
-            foreach (var type in ResourceConstants.ListResourceTypes)
+            foreach (var type in resourcesInformation.ListResourceTypes)
             {
                 PlayerResourceCount[type] = Random.Range(1000, 5000);
             }

@@ -67,7 +67,7 @@ namespace Tiles
             _resourcesToEarn = countToEarn;
             _resourceType = resourceType;
             resourcesToGoText.text = _resourcesToEarn.ToString();
-            if (resourcesInformation.resourcesInformation.TryGetValue(_resourceType, out var sprite))
+            if (resourcesInformation.ResourcesVisualInformation.TryGetValue(_resourceType, out var sprite))
             {
                 resourceImage.sprite = sprite;
             }

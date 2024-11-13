@@ -165,7 +165,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &5612885867678867962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -200,6 +200,8 @@ MonoBehaviour:
   - {fileID: 1633992505311915940}
   - {fileID: 6981677590397576892}
   canvas: {fileID: 1920335363194707031}
+  resourcesInformation: {fileID: 11400000, guid: ab4076f7acb8588448d49b7ddea75886,
+    type: 2}
 --- !u!1001 &2539717503650584234
 PrefabInstance:
   m_ObjectHideFlags: 0

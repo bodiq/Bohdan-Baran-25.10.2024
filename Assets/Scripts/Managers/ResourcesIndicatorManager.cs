@@ -1,11 +1,10 @@
-using System;
 using System.Collections.Generic;
 using Configs;
 using Data;
 using Enums;
 using UnityEngine;
 using Random = UnityEngine.Random;
-using Constants;
+using ScriptableObjects;
 using Tiles;
 
 namespace Managers
@@ -14,6 +13,7 @@ namespace Managers
     {
         [SerializeField] private List<ResourcesIndicator> resourcesIndicators;
         [SerializeField] private Canvas canvas;
+        [SerializeField] private ResourcesInformation resourcesInformation;
 
         private ResourceData[] _resourceData;
         private Camera _mainCamera;
@@ -38,11 +38,11 @@ namespace Managers
 
         private void SetRandomResourceCondition()
         {
-            var arrayDataLenght = Random.Range(ResourceConstants.MinResourcesArrayLenght, ResourceConstants.MaxResourcesArrayLenght);
+            var arrayDataLenght = Random.Range(ResourcesInformation.MinResourcesArrayLength, ResourcesInformation.MaxResourcesArrayLength);
             
             _resourceData = new ResourceData[arrayDataLenght];
             
-            var listAvailableEnums = new List<ResourceType>(ResourceConstants.ListResourceTypes);
+            var listAvailableEnums = new List<ResourceType>(resourcesInformation.ListResourceTypes);
 
             for (var i = 0; i < arrayDataLenght; i++)
             {
@@ -53,7 +53,7 @@ namespace Managers
                 }
                 
                 var randomResource = GetRandomResourceType(listAvailableEnums);
-                var randomCountToEarn = Random.Range(ResourceConstants.MinResourcesCount, ResourceConstants.MaxResourcesCount);
+                var randomCountToEarn = Random.Range(resourcesInformation.MinResourcesCount, resourcesInformation.MaxResourcesCount);
                 listAvailableEnums.Remove(randomResource);
                 _resourceData[i] = new ResourceData(randomResource, ConfigHelper.RoundToNearestTen(randomCountToEarn));
             }

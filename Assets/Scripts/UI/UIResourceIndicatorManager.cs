@@ -18,7 +18,7 @@ namespace UI
         {
             foreach (var resource in GameManager.Instance.Player.PlayerResourceCount)
             {
-                if (resourcesInformation.resourcesInformation.TryGetValue(resource.Key, out var sprite))
+                if (resourcesInformation.ResourcesVisualInformation.TryGetValue(resource.Key, out var sprite))
                 {
                     var indicator = Instantiate(uiResourceIndicatorPrefab, transform);
                     indicator.Initialize(resource.Value, sprite, resource.Key);
