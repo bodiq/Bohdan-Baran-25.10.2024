@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Configs;
 using Data;
 using Enums;
 using Tiles;
@@ -6,25 +7,15 @@ using UnityEngine;
 
 namespace Managers
 {
-    public class ResourcePoolManager : MonoBehaviour
+    public class ResourcePoolManager : MonoSingleton<ResourcePoolManager>
     {
-        public static ResourcePoolManager Instance { get; private set; }
-    
         [SerializeField] private List<ResourcePool> resourcePools;
     
         private Dictionary<ResourceType, ResourcePool> _resourceDictionaryPool = new();
 
-        private void Awake()
+        protected override void Awake()
         {
-            if (Instance != null && Instance != this)
-            {
-                Destroy(this);
-            }
-            else
-            {
-                Instance = this;
-            }
-        
+            base.Awake();
             InitializePools();
         }
 

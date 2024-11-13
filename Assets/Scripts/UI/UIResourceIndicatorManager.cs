@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using Configs;
 using Enums;
+using Managers;
+using ScriptableObjects;
 using UnityEngine;
 
 namespace UI

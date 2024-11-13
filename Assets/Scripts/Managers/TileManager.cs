@@ -1,31 +1,23 @@
 using System.Collections.Generic;
 using System.Linq;
+using Configs;
 using Tiles;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Managers
 {
-    public class TileManager : MonoBehaviour
+    public class TileManager : MonoSingleton<TileManager>
     {
         [SerializeField] private GenerationMap generationMap;
-        public static TileManager Instance { get; private set; }
         
         private Tile[,] _tiles;
 
         private readonly List<Tile> _openTiles = new ();
 
-        private void Awake()
+        protected override void Awake()
         {
-            if (Instance != null && Instance != this)
-            {
-                Destroy(this);
-            }
-            else
-            {
-                Instance = this;
-            }
-            
+            base.Awake();
             _tiles = generationMap.GenerateHexTiles();
         }
 

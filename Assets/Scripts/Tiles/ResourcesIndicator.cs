@@ -1,6 +1,7 @@
 using Configs;
 using Enums;
 using Managers;
+using ScriptableObjects;
 using TMPro;
 using UI;
 using UnityEngine;

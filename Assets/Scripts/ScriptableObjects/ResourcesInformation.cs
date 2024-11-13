@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Data;
 using Enums;
 using UnityEngine;
 
-namespace Configs
+namespace ScriptableObjects
 {
     [CreateAssetMenu(fileName = "ResourcesInformation", menuName = "Resources Information")]
     public class ResourcesInformation : ScriptableObject
