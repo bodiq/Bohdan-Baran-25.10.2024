@@ -113,7 +113,7 @@ namespace Tiles
 
                         if (_resourcesIndicatorManager.CheckIfResourceIndicatorsAreFull())
                         {
-                            TileManager.Instance.UnlockTile(_resourcesIndicatorManager.MyTile); 
+                            TileManager.Instance.UnlockTile(_resourcesIndicatorManager.MyMainTile); 
                         }
                     }
                 }
@@ -127,7 +127,7 @@ namespace Tiles
 
                         if (_resourcesIndicatorManager.CheckIfResourceIndicatorsAreFull())
                         {
-                            TileManager.Instance.UnlockTile(_resourcesIndicatorManager.MyTile); 
+                            TileManager.Instance.UnlockTile(_resourcesIndicatorManager.MyMainTile); 
                         }
                     }
                 }

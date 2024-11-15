@@ -11,9 +11,9 @@ namespace Managers
     {
         [SerializeField] private GenerationMap generationMap;
         
-        private Tile[,] _tiles;
+        private MainTile[,] _tiles;
 
-        private readonly List<Tile> _openTiles = new ();
+        private readonly List<MainTile> _openTiles = new ();
 
         protected override void Awake()
         {
@@ -34,20 +34,20 @@ namespace Managers
             UnlockTile(firstTile);
         }
 
-        public void UnlockTile(Tile tile)
+        public void UnlockTile(MainTile mainTile)
         {
-            if (tile.IsTileUnlocked)
+            if (mainTile.IsTileUnlocked)
             {
                 return;
             }
             
-            _openTiles.Add(tile);
-            tile.gameObject.SetActive(true);
-            if (tile.MyIndicator)
+            _openTiles.Add(mainTile);
+            mainTile.gameObject.SetActive(true);
+            if (mainTile.MyIndicator)
             {
-                tile.MyIndicator.gameObject.SetActive(false);
+                mainTile.MyIndicator.gameObject.SetActive(false);
             }
-            tile.OpenTile();
+            mainTile.OpenTile();
             if (_openTiles.Count % 2 == 0 && _openTiles.Count > 4)
             {
                 UnlockRandomOpenTileIndicator();
@@ -58,9 +58,9 @@ namespace Managers
         public void UnlockRandomOpenTileIndicator()
         {
             var availableIndicators = _openTiles.SelectMany(tile => tile.AvailableIndicators
-                .Where(indicator => indicator.NextTileToOpen != null 
-                && !indicator.NextTileToOpen.IsTileReserved 
-                && !indicator.NextTileToOpen.IsTileUnlocked)).ToList();
+                .Where(indicator => indicator.NextMainTileToOpen != null 
+                && !indicator.NextMainTileToOpen.IsTileReserved 
+                && !indicator.NextMainTileToOpen.IsTileUnlocked)).ToList();
 
             if (availableIndicators.Count > 0)
             {

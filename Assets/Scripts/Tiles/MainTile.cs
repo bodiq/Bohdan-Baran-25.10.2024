@@ -2,20 +2,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
+using Enums;
 using Managers;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Tiles
 {
-    public class Tile : MonoBehaviour
+    public class MainTile : MonoBehaviour
     {
         [SerializeField] private List<Indicator> indicators;
         [SerializeField] private ResourcesIndicatorManager resourcesIndicatorManager;
-        [SerializeField] private GameObject tilesObjects;
         [SerializeField] private Transform resourcesEndPoint;
+        [SerializeField] private SubTile[] tiles = new SubTile[3];
         
-        [HideInInspector] public Tile[] neighbours = new Tile[6];
+        [HideInInspector] public MainTile[] neighbours = new MainTile[6];
 
         private static readonly float TileAnimationOpenDuration = 0.2f;
         
@@ -25,9 +26,11 @@ namespace Tiles
         private Indicator _myIndicatorResp;
         private Tween _openTileTween;
 
+        private SubTile _tileSelected;
+
         public List<Indicator> AvailableIndicators => indicators;
         public ResourcesIndicatorManager ResourcesIndicatorManager => resourcesIndicatorManager;
-        public GameObject TileObjects => tilesObjects;
+        public GameObject TileObjects => _tileSelected.gameObject;
         public Transform ResourcesEndPoint => resourcesEndPoint;
         public Indicator MyIndicator
         {
@@ -44,7 +47,7 @@ namespace Tiles
             ResourcesIndicatorManager.gameObject.SetActive(false);
             UnlockTile();
 
-            _openTileTween = tilesObjects.transform.DOScale(Vector3.one, TileAnimationOpenDuration).OnComplete(() =>
+            _openTileTween = _tileSelected.transform.DOScale(Vector3.one, TileAnimationOpenDuration).OnComplete(() =>
             {
                 if (AvailableIndicators == null || AvailableIndicators.Count == 0)
                 {
@@ -69,7 +72,7 @@ namespace Tiles
         public void UnlockTile()
         {
             _isUnlocked = true;
-            tilesObjects.SetActive(true);
+            _tileSelected.gameObject.SetActive(true);
         }
 
         public void ReserveTile()
@@ -77,9 +80,22 @@ namespace Tiles
             _isReserved = true;
         }
 
+        public void SetSubTilePreSetup(TileTypes tileType)
+        {
+            for (var i = 0; i < tiles.Length; i++)
+            {
+                if (tileType == tiles[i].TileType)
+                {
+                    _tileSelected = tiles[i];
+                    _tileSelected.transform.localScale = Vector3.zero;
+                    return;
+                }
+            }
+        }
+
         private Indicator GetRandomAvailableIndicator()
         {
-            var validIndicators = AvailableIndicators.Where(indicator => indicator.NextTileToOpen != null && !indicator.NextTileToOpen.IsTileUnlocked && !indicator.NextTileToOpen.IsTileReserved).ToList();
+            var validIndicators = AvailableIndicators.Where(indicator => indicator.NextMainTileToOpen != null && !indicator.NextMainTileToOpen.IsTileUnlocked && !indicator.NextMainTileToOpen.IsTileReserved).ToList();
 
             return validIndicators.Count > 0 ? validIndicators[Random.Range(0, validIndicators.Count)] : null;
         }

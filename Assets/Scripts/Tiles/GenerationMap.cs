@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Enums;
 using Tiles;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GenerationMap : MonoBehaviour
 {
-    [SerializeField] private Tile tilePrefab;
+    [FormerlySerializedAs("tilePrefab")] [SerializeField] private MainTile mainTilePrefab;
 
     [SerializeField] private int columnsMap;
     [SerializeField] private int rowsMap;
@@ -20,11 +22,11 @@ public class GenerationMap : MonoBehaviour
     private static readonly float TileXOffsetOddRow = 0.25f;
     private static readonly float HalfUnit = 0.5f;
     
-    private Tile[,] _tiles;
+    private MainTile[,] _tiles;
     
-    public Tile[,] GenerateHexTiles()
+    public MainTile[,] GenerateHexTiles()
     {
-        _tiles = new Tile[rowsMap, columnsMap];
+        _tiles = new MainTile[rowsMap, columnsMap];
 
         for (var i = 0; i < rowsMap; i++)
         {
@@ -55,7 +57,7 @@ public class GenerationMap : MonoBehaviour
                 }
 
                 var position = new Vector3(xOffset, height, zOffset);
-                var tile = Instantiate(tilePrefab, position, Quaternion.identity, transform);
+                var tile = Instantiate(mainTilePrefab, position, Quaternion.identity, transform);
                 _tiles[i, j] = tile;
             }
         }
@@ -80,6 +82,21 @@ public class GenerationMap : MonoBehaviour
     {
         for (var i = 0; i < rowsMap; i++)
         {
+            TileTypes tileType;
+
+            if (i < 2)
+            {
+                tileType = TileTypes.Green;
+            }
+            else if (i < 4)
+            {
+                tileType = TileTypes.Grey;
+            }
+            else
+            {
+                tileType = TileTypes.Yellow;
+            }
+            
             for (var j = 0; j < columnsMap; j++)
             {
                 var tile = _tiles[i, j];
@@ -92,8 +109,7 @@ public class GenerationMap : MonoBehaviour
                 tile.neighbours[5] = GetNeighbour(i + 1, j + (i % 2 == 1 ? 1 : 0), j < columnsMap - 1 || i % 2 == 0); // Верхній правий
                     
                 tile.ResourcesIndicatorManager.Initialize();
-                tile.TileObjects.SetActive(false);
-                tile.TileObjects.transform.localScale = Vector3.zero;
+                tile.SetSubTilePreSetup(tileType);
 
                 foreach (var tileAvailableIndicator in tile.AvailableIndicators)
                 {
@@ -103,7 +119,7 @@ public class GenerationMap : MonoBehaviour
         }
     }
     
-    private Tile GetNeighbour(int i, int j, bool condition)
+    private MainTile GetNeighbour(int i, int j, bool condition)
     {
         return condition && i >= 0 && i < rowsMap && j >= 0 && j < columnsMap ? _tiles[i, j] : null;
     }

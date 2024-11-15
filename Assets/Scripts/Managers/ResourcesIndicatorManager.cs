@@ -20,7 +20,7 @@ namespace Managers
 
         public readonly Dictionary<ResourceType, ResourcesIndicator> ActiveResourceIndicators = new();
 
-        public Tile MyTile { get; set; }
+        public MainTile MyMainTile { get; set; }
 
         private void Start()
         {

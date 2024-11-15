@@ -576,10 +576,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb07760f0bdfc6340b7161f898e5c257, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tilePrefab: {fileID: 2798937259682695843, guid: 64fa419ec2460644295e3b88e2666100,
+  mainTilePrefab: {fileID: 5265073136681185856, guid: 61c5b0f6100f4264487bfd411b2ba55e,
     type: 3}
-  columnsMap: 5
-  rowsMap: 5
+  columnsMap: 6
+  rowsMap: 6
   tileSize: 4
   maxHeight: 1
   minHeight: 0

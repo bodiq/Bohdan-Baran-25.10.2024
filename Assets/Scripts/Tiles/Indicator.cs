@@ -11,10 +11,10 @@ namespace Tiles
     {
         [SerializeField] private IndicatorInformation indicatorInformation;
         
-        private Tile _nextTileToOpen;
-        private Tile _myTile;
+        private MainTile _nextMainTileToOpen;
+        private MainTile _myMainTile;
 
-        public Tile NextTileToOpen => _nextTileToOpen;
+        public MainTile NextMainTileToOpen => _nextMainTileToOpen;
 
         private bool _isCollecting = false;
 
@@ -24,14 +24,14 @@ namespace Tiles
         private readonly Dictionary<ResourcesIndicator, int> _resourcesTextIndicatorsToIncrease = new();
         private readonly Dictionary<ResourcesIndicator, int> _resourcesTextRemainderToIncrease = new();
         
-        public void SetIndicatorDependence(Tile tile)
+        public void SetIndicatorDependence(MainTile mainTile)
         {
-            _myTile = tile;
+            _myMainTile = mainTile;
         
-            if (_myTile != null)
+            if (_myMainTile != null)
             {
-                _nextTileToOpen = _myTile.neighbours[gameObject.transform.GetSiblingIndex()];
-                if (_nextTileToOpen == null || _nextTileToOpen.IsTileUnlocked)
+                _nextMainTileToOpen = _myMainTile.neighbours[gameObject.transform.GetSiblingIndex()];
+                if (_nextMainTileToOpen == null || _nextMainTileToOpen.IsTileUnlocked)
                 {
                     gameObject.SetActive(false);
                 }
@@ -49,13 +49,13 @@ namespace Tiles
         public void ActivateIndicator()
         {
             gameObject.SetActive(true);
-            _nextTileToOpen.ReserveTile();
+            _nextMainTileToOpen.ReserveTile();
             
             _activationAnimation = transform.DOScale(indicatorInformation.AnimationEndScale, indicatorInformation.ActivationAnimationDuration).OnComplete(() =>
             {
-                _nextTileToOpen.ResourcesIndicatorManager.gameObject.SetActive(true);
-                _nextTileToOpen.ResourcesIndicatorManager.MyTile = _nextTileToOpen;
-                _nextTileToOpen.MyIndicator = this;
+                _nextMainTileToOpen.ResourcesIndicatorManager.gameObject.SetActive(true);
+                _nextMainTileToOpen.ResourcesIndicatorManager.MyMainTile = _nextMainTileToOpen;
+                _nextMainTileToOpen.MyIndicator = this;
             });
         }
 
@@ -67,7 +67,7 @@ namespace Tiles
             _resourcesTextIndicatorsToIncrease.Clear();
             _resourcesTextRemainderToIncrease.Clear();
 
-            foreach (var indicator in _nextTileToOpen.ResourcesIndicatorManager.ActiveResourceIndicators)
+            foreach (var indicator in _nextMainTileToOpen.ResourcesIndicatorManager.ActiveResourceIndicators)
             {
                 if (GameManager.Instance.Player.PlayerResourceCount.TryGetValue(indicator.Key, out var value))
                 {
@@ -117,7 +117,7 @@ namespace Tiles
         {
             _isCollecting = true;
 
-            while (!_nextTileToOpen.ResourcesIndicatorManager.CheckIfResourceIndicatorsAreFull())
+            while (!_nextMainTileToOpen.ResourcesIndicatorManager.CheckIfResourceIndicatorsAreFull())
             {
                 foreach (var resourcesIndicator in _resourcesTextIndicatorsToIncrease)
                 {
@@ -137,7 +137,7 @@ namespace Tiles
                             remainder = value;
                             _resourcesTextRemainderToIncrease.Remove(resourceIndicator.Key);
                         }
-                        resource.TriggerResourceFly(GameManager.Instance.Player.transform.position, _nextTileToOpen.ResourcesEndPoint.position, resourceIndicator.Key, resourcesIndicator.Value, remainder);
+                        resource.TriggerResourceFly(GameManager.Instance.Player.transform.position, _nextMainTileToOpen.ResourcesEndPoint.position, resourceIndicator.Key, resourcesIndicator.Value, remainder);
                     }
                 }
 
