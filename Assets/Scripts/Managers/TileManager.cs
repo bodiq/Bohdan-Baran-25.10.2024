@@ -29,9 +29,10 @@ namespace Managers
 
         private void UnlockFirstTile()
         {
-            var firstTile = _tiles[0, 0];
-            firstTile.TileObjects.transform.localScale = Vector3.one;
+            var firstTile = _tiles[0, 3];
+            firstTile.SubTileSelected.transform.localScale = Vector3.one;
             UnlockTile(firstTile);
+            GameManager.Instance.Player.transform.position = firstTile.transform.position;
         }
 
         public void UnlockTile(MainTile mainTile)

@@ -578,7 +578,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainTilePrefab: {fileID: 5265073136681185856, guid: 61c5b0f6100f4264487bfd411b2ba55e,
     type: 3}
-  columnsMap: 6
+  columnsMap: 5
   rowsMap: 6
   tileSize: 4
   maxHeight: 1

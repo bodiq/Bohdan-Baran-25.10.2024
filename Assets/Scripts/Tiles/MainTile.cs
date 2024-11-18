@@ -26,11 +26,11 @@ namespace Tiles
         private Indicator _myIndicatorResp;
         private Tween _openTileTween;
 
-        private SubTile _tileSelected;
+        private SubTile _subTileSelected;
 
         public List<Indicator> AvailableIndicators => indicators;
         public ResourcesIndicatorManager ResourcesIndicatorManager => resourcesIndicatorManager;
-        public GameObject TileObjects => _tileSelected.gameObject;
+        public GameObject SubTileSelected => _subTileSelected.gameObject;
         public Transform ResourcesEndPoint => resourcesEndPoint;
         public Indicator MyIndicator
         {
@@ -47,7 +47,7 @@ namespace Tiles
             ResourcesIndicatorManager.gameObject.SetActive(false);
             UnlockTile();
 
-            _openTileTween = _tileSelected.transform.DOScale(Vector3.one, TileAnimationOpenDuration).OnComplete(() =>
+            _openTileTween = _subTileSelected.transform.DOScale(Vector3.one, TileAnimationOpenDuration).OnComplete(() =>
             {
                 if (AvailableIndicators == null || AvailableIndicators.Count == 0)
                 {
@@ -72,7 +72,7 @@ namespace Tiles
         public void UnlockTile()
         {
             _isUnlocked = true;
-            _tileSelected.gameObject.SetActive(true);
+            _subTileSelected.gameObject.SetActive(true);
         }
 
         public void ReserveTile()
@@ -80,16 +80,26 @@ namespace Tiles
             _isReserved = true;
         }
 
-        public void SetSubTilePreSetup(TileTypes tileType)
+        public void SetSubTilePreSetup(TileTypes tileType, bool isResourcedTile = false)
         {
             for (var i = 0; i < tiles.Length; i++)
             {
                 if (tileType == tiles[i].TileType)
                 {
-                    _tileSelected = tiles[i];
-                    _tileSelected.transform.localScale = Vector3.zero;
+                    _subTileSelected = tiles[i];
+                    //_subTileSelected.transform.localScale = Vector3.zero;
+                    _subTileSelected.gameObject.SetActive(true);
+                    _subTileSelected.TurnResourcesObjects(isResourcedTile);
                     return;
                 }
+            }
+        }
+
+        public void SetIndicatorDependencies()
+        {
+            foreach (var tileAvailableIndicator in AvailableIndicators)
+            {
+                tileAvailableIndicator.SetIndicatorDependence(this);
             }
         }
 

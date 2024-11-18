@@ -139,6 +139,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileType: 0
+  resourcesObjects: {fileID: 440267329487711084}
 --- !u!1 &3104003037218875521
 GameObject:
   m_ObjectHideFlags: 0

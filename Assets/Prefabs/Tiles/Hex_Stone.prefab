@@ -213,7 +213,7 @@ GameObject:
   - component: {fileID: 8014553586274572379}
   m_Layer: 0
   m_Name: Hex_Stone
-  m_TagString: Untagged
+  m_TagString: Tile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -248,6 +248,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileType: 1
+  resourcesObjects: {fileID: 4929324578336971858}
 --- !u!1 &5210868377616357886
 GameObject:
   m_ObjectHideFlags: 0
