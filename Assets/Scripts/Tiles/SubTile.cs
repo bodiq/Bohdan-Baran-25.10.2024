@@ -10,9 +10,9 @@ namespace Tiles
 
         public TileTypes TileType => tileType;
 
-        public void TurnResourcesObjects(bool isActive)
+        public void ResourcedObjectsPreSetup()
         {
-            resourcesObjects.SetActive(isActive);
+            resourcesObjects.SetActive(true);
         }
     }
 }

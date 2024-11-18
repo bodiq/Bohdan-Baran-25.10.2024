@@ -22,6 +22,7 @@ namespace Tiles
         
         private bool _isUnlocked = false;
         private bool _isReserved = false;
+        private bool _isResourcedTile = false;
 
         private Indicator _myIndicatorResp;
         private Tween _openTileTween;
@@ -49,6 +50,12 @@ namespace Tiles
 
             _openTileTween = _subTileSelected.transform.DOScale(Vector3.one, TileAnimationOpenDuration).OnComplete(() =>
             {
+                if (_isResourcedTile)
+                {
+                    TileManager.Instance.UnlockRandomOpenTileIndicator();
+                    return;
+                }
+                
                 if (AvailableIndicators == null || AvailableIndicators.Count == 0)
                 {
                     Debug.LogWarning("No available indicators to activate.");
@@ -87,9 +94,13 @@ namespace Tiles
                 if (tileType == tiles[i].TileType)
                 {
                     _subTileSelected = tiles[i];
-                    //_subTileSelected.transform.localScale = Vector3.zero;
-                    _subTileSelected.gameObject.SetActive(true);
-                    _subTileSelected.TurnResourcesObjects(isResourcedTile);
+                    _subTileSelected.transform.localScale = Vector3.zero;
+                    _isResourcedTile = isResourcedTile;
+                    if (_isResourcedTile)
+                    {
+                        indicators.Clear();
+                        _subTileSelected.ResourcedObjectsPreSetup();
+                    }
                     return;
                 }
             }
