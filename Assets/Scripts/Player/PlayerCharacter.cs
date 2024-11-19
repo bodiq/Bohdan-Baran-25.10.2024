@@ -10,7 +10,7 @@ namespace Player
     {
         [SerializeField] private GameObject stepDustParticle;
         [SerializeField] private ResourcesInformation resourcesInformation;
-        
+
         private PlayerMovement _playerMovement;
 
         public Dictionary<ResourceType, int> PlayerResourceCount = new();
