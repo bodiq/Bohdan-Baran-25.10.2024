@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Tile
   - Water
+  - Resources
   layers:
   - Default
   - TransparentFX

@@ -1,6 +1,5 @@
-using System;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Player
 {
@@ -13,19 +12,28 @@ namespace Player
     
         private const string ResourcesTag = "Resources";
 
+        private List<GameObject> _activeResources = new();
+
         private void OnTriggerEnter(Collider other)
         {
-            if (other.CompareTag(ResourcesTag))
+            if (other.CompareTag(ResourcesTag) && !_activeResources.Contains(other.gameObject))
             {
+                _activeResources.Add(other.gameObject);
                 StartGathering();    
             }
         }
 
-        private void OnTriggerStay(Collider other)
+        private void OnTriggerExit(Collider other)
         {
-            if (!other.CompareTag(ResourcesTag))
+            if (other.CompareTag(ResourcesTag))
             {
-                StopGathering();
+                if (_activeResources.Remove(other.gameObject))
+                {
+                    if (_activeResources.Count == 0)
+                    {
+                        StopGathering();
+                    }
+                }
             }
         }
 

@@ -11,7 +11,7 @@ namespace Player
 
         public void StartGather()
         {
-            transform.DOScale(Vector3.one, 0.2f).OnComplete(() =>
+            transform.DOScale(Vector3.one, 0.5f).OnComplete(() =>
             {
                 boxCollider.enabled = true;
             });

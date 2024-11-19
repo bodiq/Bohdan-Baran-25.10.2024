@@ -82,6 +82,7 @@ GameObject:
   - component: {fileID: 4560444310663400489}
   - component: {fileID: 7668084973046809440}
   - component: {fileID: 2989836178674500121}
+  - component: {fileID: 4349440723010019182}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -136,7 +137,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   gravity: -9.81
-  playerAnimation: {fileID: 0}
+  playerAnimation: {fileID: 4625261688976949088}
   restrictedMovement: {fileID: 2989836178674500121}
 --- !u!143 &7668084973046809440
 CharacterController:
@@ -177,6 +178,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   powerMove: 15
+--- !u!54 &4349440723010019182
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1945973267793662044}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &424869906232264720
 PrefabInstance:
   m_ObjectHideFlags: 0
