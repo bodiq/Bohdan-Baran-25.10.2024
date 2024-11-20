@@ -8,9 +8,11 @@ namespace Player
     
         private static readonly int Speed = Animator.StringToHash(AnimationSpeedParameterName);
         private static readonly int IsGathering = Animator.StringToHash(AnimationGatherParameterName);
+        private static readonly int Gather = Animator.StringToHash(AnimationGatherStateName);
     
         private const string AnimationSpeedParameterName = "Speed";
         private const string AnimationGatherParameterName = "Gathering";
+        private const string AnimationGatherStateName = "Gather";
 
         public void SetMovementSpeed(float speedMovement)
         {
@@ -25,6 +27,11 @@ namespace Player
         public void SetGatheringState(bool isActive)
         {
             animator.SetBool(IsGathering, isActive);
+        }
+
+        public void PlayGatherAnimation()
+        {
+            animator.Play(Gather);
         }
     }
 }

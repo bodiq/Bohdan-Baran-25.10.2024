@@ -61,7 +61,7 @@ namespace Tiles
 
         private void OnTriggerEnter(Collider other)
         {
-            if (_isCollecting)
+            if (_isCollecting || !other.CompareTag("Player"))
                 return; 
             
             _resourcesTextIndicatorsToIncrease.Clear();

@@ -14,24 +14,25 @@ namespace Player
         
         private void OnTriggerEnter(Collider other)
         {
-            if (CompareTag(ResourcesTag))
+            if (other.CompareTag(ResourcesTag))
             {
-                Debug.LogError("Boom");
+                
             }
         }
 
         public void StartGather()
         {
-            transform.DOScale(Vector3.one, 0.5f).OnComplete(() =>
-            {
-                boxCollider.enabled = true;
-            });
+            transform.DOScale(Vector3.one, 0.5f);
         }
 
         public void StopGather()
         {
-            boxCollider.enabled = false;
             transform.DOScale(Vector3.zero, 0.5f);
+        }
+
+        public void TurnCollider(bool isActive)
+        {
+            boxCollider.enabled = isActive;
         }
     }
 }
