@@ -53,6 +53,7 @@ MonoBehaviour:
   stepDustParticle: {fileID: 8121350789858267845}
   resourcesInformation: {fileID: 11400000, guid: ab4076f7acb8588448d49b7ddea75886,
     type: 2}
+  playerGather: {fileID: 4490807397634625127}
 --- !u!114 &4560444310663400489
 MonoBehaviour:
   m_ObjectHideFlags: 0

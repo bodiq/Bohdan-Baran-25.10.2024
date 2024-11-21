@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Enums;
+using Supplies;
 using UnityEngine;
 
 namespace Player
@@ -16,6 +18,8 @@ namespace Player
 
         private bool _isGathering = false;
 
+        private PlayerInstrument _instrumentToUse;
+
         private void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag(ResourcesTag) && !_activeResources.Contains(other.gameObject))
@@ -23,6 +27,16 @@ namespace Player
                 _activeResources.Add(other.gameObject);
                 if (!_isGathering)
                 {
+                    var resource = other.GetComponent<Resource>();
+                    if (resource)
+                    {
+                        _instrumentToUse = resource.ResourceType switch
+                        {
+                            ResourceType.Wood => axe,
+                            ResourceType.Crystal or ResourceType.Stone => hammer,
+                            _ => _instrumentToUse
+                        };
+                    }
                     _isGathering = true;
                     playerAnimator.PlayGatherAnimation();
                 }
@@ -33,29 +47,34 @@ namespace Player
         {
             if (other.CompareTag(ResourcesTag))
             {
-                if (_activeResources.Remove(other.gameObject))
+                TryRemoveResource(other.gameObject);
+            }
+        }
+
+        public void TryRemoveResource(GameObject resource)
+        {
+            if (_activeResources.Remove(resource))
+            {
+                if (_activeResources.Count == 0)
                 {
-                    if (_activeResources.Count == 0)
-                    {
-                        _isGathering = false;
-                    }
+                    _isGathering = false;
                 }
             }
         }
 
         private void OnEnableInstrumentCollider()
         {
-            axe.TurnCollider(true);
+            _instrumentToUse.TurnCollider(true);
         }
         
         private void OnDisableInstrumentCollider()
         {
-            axe.TurnCollider(false);
+            _instrumentToUse.TurnCollider(false);
         }
         
         private void OnGatherStart()
         {
-            axe.StartGather();
+            _instrumentToUse.StartGather();
         }
 
         private void OnGatherStop()
@@ -67,7 +86,7 @@ namespace Player
             else
             {
                 playerAnimator.SetGatheringState(false);
-                axe.StopGather();
+                _instrumentToUse.StopGather();
             }
         }
     }

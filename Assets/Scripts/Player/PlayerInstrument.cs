@@ -1,6 +1,7 @@
 ﻿using System;
 using DG.Tweening;
 using Enums;
+using Supplies;
 using UnityEngine;
 
 namespace Player
@@ -16,7 +17,11 @@ namespace Player
         {
             if (other.CompareTag(ResourcesTag))
             {
-                
+                var resource = other.GetComponent<Resource>();
+                if (resource)
+                {
+                    resource.GetGathered();
+                }
             }
         }
 
