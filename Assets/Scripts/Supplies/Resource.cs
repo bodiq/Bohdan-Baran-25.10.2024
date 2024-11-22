@@ -14,7 +14,8 @@ namespace Supplies
         [SerializeField] protected GameObject[] resourcePieces;
         [SerializeField] protected GameObject resourcePiecesGroupObject;
         [SerializeField] protected int timeToRespawn;
-
+        [SerializeField] protected float respawnScaleInDuration; 
+        
         protected int LastIndexTaken = 0;
         private Coroutine _respawnResourceCoroutine;
         private Tween _gatherTween;
@@ -54,6 +55,7 @@ namespace Supplies
         protected void ResetAllPieces()
         {
             resourcePiecesGroupObject.transform.localScale = Vector3.zero;
+
             foreach (var piece in resourcePieces)
             {
                 piece.gameObject.SetActive(true);
