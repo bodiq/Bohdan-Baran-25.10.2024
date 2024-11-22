@@ -14,7 +14,7 @@ namespace Player
     
         private const string ResourcesTag = "Resources";
 
-        private List<GameObject> _activeResources = new();
+        private readonly List<GameObject> _activeResources = new();
 
         private bool _isGathering = false;
 
