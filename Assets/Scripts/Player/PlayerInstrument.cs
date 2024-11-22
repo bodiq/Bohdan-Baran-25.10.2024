@@ -11,6 +11,8 @@ namespace Player
         [SerializeField] private Instruments instrument;
         [SerializeField] private BoxCollider boxCollider;
 
+        [SerializeField] private int countForHit = 2;
+
         private const string ResourcesTag = "Resources";
         
         private void OnTriggerEnter(Collider other)
@@ -20,7 +22,7 @@ namespace Player
                 var resource = other.GetComponent<Resource>();
                 if (resource)
                 {
-                    resource.GetGathered();
+                    resource.GetGathered(countForHit);
                 }
             }
         }

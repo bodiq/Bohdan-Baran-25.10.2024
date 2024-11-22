@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using Enums;
 using Managers;
 using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
@@ -38,7 +39,7 @@ namespace Tiles
             transform.rotation = Quaternion.Euler(0f, randomYOffsetRotation, 0f);
         }
 
-        public void TriggerResourceFly(Vector3 startPosition, Vector3 endPosition, ResourcesIndicator resourcesIndicator, int count, int remainder = 0)
+        public void IndicatorFly(Vector3 startPosition, Vector3 endPosition, ResourcesIndicator resourcesIndicator, int count, int remainder = 0)
         {
             transform.position = startPosition + _randomPositionOffset;
 
@@ -52,6 +53,25 @@ namespace Tiles
                     ResourcePoolManager.Instance.ReturnResource(resourcesIndicator.ResourceType, this);
                     resourcesIndicator.IncreaseResourceTextAmount(count, remainder);
                 });
+        }
+
+        public void PlayerFly(Vector3 startPosition, ResourceType resourceType)
+        {
+            transform.position = startPosition;
+            
+            var randomX = Random.Range(-2f, 2f);
+            var randomZ = Random.Range(-2f, 2f);
+            var randomY = Random.Range(1f, 2f);
+            var randomJumpPos = new Vector3(transform.position.x + randomX, transform.position.y + randomY,
+                transform.position.z + randomZ);
+
+            transform.DOJump(randomJumpPos, 2f, 1, 0.5f).SetEase(Ease.InQuad).OnComplete(() =>
+            {
+                transform.DOMove(GameManager.Instance.Player.transform.position, 0.3f).OnComplete(() =>
+                {
+                    ResourcePoolManager.Instance.ReturnResource(resourceType, this);
+                });
+            });
         }
 
         private void OnDisable()

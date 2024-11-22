@@ -24,11 +24,18 @@ namespace Supplies
 
         public ResourceType ResourceType => resourceType;
 
-        public void GetGathered()
+        public void GetGathered(int count)
         {
             resourcePieces[LastIndexTaken++].SetActive(false);
             _gatherTween?.Kill();
             _gatherTween = resourcePiecesGroupObject.transform.DOScale(_gatherEndScaleValue, 0.1f).SetLoops(2, LoopType.Yoyo);
+
+            for (var i = 0; i < count; i++)
+            {
+                var resource = ResourcePoolManager.Instance.GetResource(ResourceType);
+                resource.gameObject.SetActive(true);
+                resource.PlayerFly(transform.position, ResourceType);
+            }
 
             if (LastIndexTaken == resourcePieces.Length - 1)
             {
