@@ -14,7 +14,8 @@ namespace Supplies
         [SerializeField] protected GameObject[] resourcePieces;
         [SerializeField] protected GameObject resourcePiecesGroupObject;
         [SerializeField] protected int timeToRespawn;
-        [SerializeField] protected float respawnScaleInDuration; 
+        [SerializeField] protected float respawnScaleInDuration;
+        [SerializeField] protected UIResourceCounterManager resourceCounterManager;
         
         protected int LastIndexTaken = 0;
         private Coroutine _respawnResourceCoroutine;
@@ -23,6 +24,11 @@ namespace Supplies
         private readonly Vector3 _gatherEndScaleValue = new (0.8f, 0.8f, 0.8f);
 
         public ResourceType ResourceType => resourceType;
+
+        protected virtual void Start()
+        {
+            resourceCounterManager.Initialize(resourceType);
+        }
 
         public void GetGathered(int count)
         {
@@ -36,6 +42,8 @@ namespace Supplies
                 resource.gameObject.SetActive(true);
                 resource.AnimateResourceForGathering(transform.position, ResourceType);
             }
+            
+            resourceCounterManager.ShowAvailableResourceCounter(count);
 
             if (LastIndexTaken == resourcePieces.Length - 1)
             {

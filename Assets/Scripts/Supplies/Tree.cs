@@ -20,9 +20,10 @@ namespace Supplies
         private Vector3 _endRotationVector;
 
         private static readonly Vector3 EndValueRotatingOnRespawn = new (0, 360, 0);
-        
-        private void Start()
+
+        protected override void Start()
         {
+            base.Start();
             _randomXRotation = Random.Range(2f, 5f);
             _randomZRotation = Random.Range(2f, 5f);
 
