@@ -137,7 +137,7 @@ namespace Tiles
                             remainder = value;
                             _resourcesTextRemainderToIncrease.Remove(resourceIndicator.Key);
                         }
-                        resource.IndicatorFly(GameManager.Instance.Player.transform.position, _nextMainTileToOpen.ResourcesEndPoint.position, resourceIndicator.Key, resourcesIndicator.Value, remainder);
+                        resource.AnimateResourceForTileFilling(GameManager.Instance.Player.transform.position, _nextMainTileToOpen.ResourcesEndPoint.position, resourceIndicator.Key, resourcesIndicator.Value, remainder);
                     }
                 }
 

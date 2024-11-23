@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UI;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Configs
 {
@@ -20,6 +22,14 @@ namespace Configs
         public static TUIScreen GetUIScreen<TUIScreen>(List<UIScreen> screens) where TUIScreen : UIScreen
         {
             return screens.Find(screen => screen is TUIScreen) as TUIScreen;
+        }
+
+        public static Vector3 GenerateRandomVector(Vector3 range)
+        {
+            return new Vector3(
+                Random.Range(-range.x, range.x),
+                Random.Range(-range.y, range.y),
+                Random.Range(-range.z, range.z));
         }
     }
 }

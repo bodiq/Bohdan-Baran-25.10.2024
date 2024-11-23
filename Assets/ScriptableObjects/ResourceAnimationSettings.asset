@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2662bef2b0ec4dfbac7d51c477ca2725, type: 3}
+  m_Name: ResourceAnimationSettings
+  m_EditorClassIdentifier: 
+  randomSpawnPositionRangeTileFill: {x: 0.5, y: 0.5, z: 0.5}
+  randomSpawnRotationRangeTileFill: {x: 0, y: 360, z: 0}
+  randomEndPositionFlyRangeTileFill: {x: 1.4, y: 0, z: 1.4}
+  tileFillJumpPower: 2.5
+  tileFillJumpDurationToFirstPos: 0.7
+  tileFillJumpDurationToSecondPos: 0.2
+  tileFillEndPositionHeightOffset: 0.7
+  gatheringJumpPower: 2
+  gatheringJumpDuration: 0.7
+  gatheringMoveToPlayerDuration: 0.3

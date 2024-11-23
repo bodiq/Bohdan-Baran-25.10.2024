@@ -34,7 +34,7 @@ namespace Supplies
             {
                 var resource = ResourcePoolManager.Instance.GetResource(ResourceType);
                 resource.gameObject.SetActive(true);
-                resource.PlayerFly(transform.position, ResourceType);
+                resource.AnimateResourceForGathering(transform.position, ResourceType);
             }
 
             if (LastIndexTaken == resourcePieces.Length - 1)
