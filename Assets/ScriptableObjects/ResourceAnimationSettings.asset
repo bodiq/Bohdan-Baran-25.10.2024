@@ -21,4 +21,4 @@ MonoBehaviour:
   tileFillEndPositionHeightOffset: 0.7
   gatheringJumpPower: 2
   gatheringJumpDuration: 0.7
-  gatheringMoveToPlayerDuration: 0.3
+  gatheringMoveToPlayerDuration: 0.2

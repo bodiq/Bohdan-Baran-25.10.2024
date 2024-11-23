@@ -20,6 +20,8 @@ namespace Tiles
         
         private Tween _jumpTween;
         
+        private Vector3 _startPosition;
+        
         private void Awake()
         {
             InitializeGatheringOffsets();
@@ -71,13 +73,28 @@ namespace Tiles
             var randomJumpPos = transform.position + _randomEndJumpPositionGathering;
 
             _jumpTween = DOTween.Sequence()
-            .Append(transform.DOJump(randomJumpPos, resourceAnimationSettings.GatheringJumpPower, 1, resourceAnimationSettings.GatheringJumpDuration).SetEase(Ease.Linear))
-            .Join(transform.DORotate(_randomRotationAxisGathering * 360, resourceAnimationSettings.GatheringJumpDuration, RotateMode.LocalAxisAdd))
-            .Append(transform.DOMove(GameManager.Instance.Player.transform.position, resourceAnimationSettings.GatheringMoveToPlayerDuration))
-            .OnComplete(() => ReturnResourceToPool(resourceType));
-          
+                .Append(transform.DOJump(randomJumpPos, resourceAnimationSettings.GatheringJumpPower, 1,
+                    resourceAnimationSettings.GatheringJumpDuration).SetEase(Ease.Linear))
+                .Join(transform.DORotate(_randomRotationAxisGathering * 360,
+                    resourceAnimationSettings.GatheringJumpDuration, RotateMode.LocalAxisAdd))
+                .Append(DOTween.To(MoveToPlayer, 0f, 1f, resourceAnimationSettings.GatheringMoveToPlayerDuration).SetEase(Ease.Linear))
+                .OnComplete(() =>
+                {
+                    ReturnResourceToPool(resourceType);
+                    _startPosition = Vector3.zero;
+                });
         }
 
+        private void MoveToPlayer(float value)
+        {
+            if (_startPosition == Vector3.zero)
+            {
+                _startPosition = transform.position;
+            }
+            
+            transform.position = Vector3.Lerp(_startPosition, GameManager.Instance.Player.GetResourceEndPos, value);
+        }
+        
         private void ReturnResourceToPool(ResourceType resourceType)
         {
             ResourcePoolManager.Instance.ReturnResource(resourceType, this);

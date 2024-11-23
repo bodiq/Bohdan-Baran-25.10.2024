@@ -11,6 +11,7 @@ namespace Player
         [SerializeField] private GameObject stepDustParticle;
         [SerializeField] private ResourcesInformation resourcesInformation;
         [SerializeField] private PlayerGather playerGather;
+        [SerializeField] private Transform collectResourcesPoint;
 
         private PlayerMovement _playerMovement;
 
@@ -18,6 +19,8 @@ namespace Player
         public PlayerGather PlayerGather => playerGather;
 
         public GameObject StepDustParticle => stepDustParticle;
+
+        public Vector3 GetResourceEndPos => collectResourcesPoint.position;
 
         private void Awake()
         {

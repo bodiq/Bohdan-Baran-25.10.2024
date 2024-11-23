@@ -19,7 +19,7 @@ namespace ScriptableObjects
         [Header("Gathering Settings")]
         [SerializeField] private float gatheringJumpPower = 2f;
         [SerializeField] private float gatheringJumpDuration = 0.7f;
-        [SerializeField] private float gatheringMoveToPlayerDuration = 0.3f;
+        [SerializeField] private float gatheringMoveToPlayerDuration = 0.4f;
 
 
         public Vector3 RandomSpawnPositionRangeTileFill => randomSpawnPositionRangeTileFill;
