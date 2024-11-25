@@ -12,7 +12,7 @@ namespace Supplies
             
             RespawnTween?.Kill();
             
-            RespawnTween = resourcePiecesGroupObject.transform.DOScale(Vector3.one, 0.4f).OnComplete(() =>
+            RespawnTween = resourcePiecesGroupObject.transform.DOScale(_initialScaleValue, 0.4f).OnComplete(() =>
             {
                 resourceCollider.enabled = true;
             });

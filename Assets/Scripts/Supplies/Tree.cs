@@ -45,7 +45,7 @@ namespace Supplies
 
             _rotateTweenSpawnEffect = resourcePiecesGroupObject.transform.DORotate(EndValueRotatingOnRespawn, durationRotationSpawn, RotateMode.FastBeyond360).OnComplete(StartWindEffect);
             
-            RespawnTween = resourcePiecesGroupObject.transform.DOScale(Vector3.one, respawnScaleInDuration).SetEase(Ease.OutBack).OnComplete(() =>
+            RespawnTween = resourcePiecesGroupObject.transform.DOScale(_initialScaleValue, respawnScaleInDuration).SetEase(Ease.OutBack).OnComplete(() =>
             {
                 resourceCollider.enabled = true;
             });

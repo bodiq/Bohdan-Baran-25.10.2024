@@ -21,13 +21,16 @@ namespace Supplies
         private Coroutine _respawnResourceCoroutine;
         private Tween _gatherTween;
         protected Tween RespawnTween;
-        private readonly Vector3 _gatherEndScaleValue = new (0.8f, 0.8f, 0.8f);
+        private Vector3 _gatherEndScaleValue;
+        protected Vector3 _initialScaleValue;
 
         public ResourceType ResourceType => resourceType;
 
         protected virtual void Start()
         {
             resourceCounterManager.Initialize(resourceType);
+            _gatherEndScaleValue = resourcePiecesGroupObject.transform.localScale - new Vector3(0.15f, 0.15f, 0.15f);
+            _initialScaleValue = resourcePiecesGroupObject.transform.localScale;
         }
 
         public void GetGathered(int count)
