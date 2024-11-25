@@ -44,7 +44,7 @@ namespace Player
 
         public void TurnTrail(bool isActive)
         {
-            trailRenderer.enabled = isActive;
+            trailRenderer.emitting = isActive;
         }
     }
 }

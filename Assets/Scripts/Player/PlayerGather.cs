@@ -89,7 +89,10 @@ namespace Player
                 playerAnimator.SetGatheringState(false);
                 _instrumentToUse.StopGather();
             }
-            
+        }
+
+        private void OnSwingEnd()
+        {
             _instrumentToUse.TurnTrail(false);
         }
     }
