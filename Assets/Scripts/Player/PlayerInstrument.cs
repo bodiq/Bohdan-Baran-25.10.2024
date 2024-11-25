@@ -10,8 +10,8 @@ namespace Player
     {
         [SerializeField] private Instruments instrument;
         [SerializeField] private BoxCollider boxCollider;
-
         [SerializeField] private int countForHit = 2;
+        [SerializeField] private TrailRenderer trailRenderer;
 
         private const string ResourcesTag = "Resources";
         
@@ -40,6 +40,11 @@ namespace Player
         public void TurnCollider(bool isActive)
         {
             boxCollider.enabled = isActive;
+        }
+
+        public void TurnTrail(bool isActive)
+        {
+            trailRenderer.enabled = isActive;
         }
     }
 }

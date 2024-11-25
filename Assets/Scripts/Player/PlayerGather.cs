@@ -75,6 +75,7 @@ namespace Player
         private void OnGatherStart()
         {
             _instrumentToUse.StartGather();
+            _instrumentToUse.TurnTrail(true);
         }
 
         private void OnGatherStop()
@@ -88,6 +89,8 @@ namespace Player
                 playerAnimator.SetGatheringState(false);
                 _instrumentToUse.StopGather();
             }
+            
+            _instrumentToUse.TurnTrail(false);
         }
     }
 }
