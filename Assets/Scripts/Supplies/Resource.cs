@@ -16,28 +16,38 @@ namespace Supplies
         [SerializeField] protected int timeToRespawn;
         [SerializeField] protected float respawnScaleInDuration;
         [SerializeField] protected UIResourceCounterManager resourceCounterManager;
+        [SerializeField] protected float gatheredAnimationDuration;
+        [SerializeField] protected float shakeAnimationPower;
         
-        protected int LastIndexTaken = 0;
         private Coroutine _respawnResourceCoroutine;
-        private Tween _gatherTween;
+        private Vector3 _respawnStartScale;
+
+        protected Tween GatherTween;
         protected Tween RespawnTween;
-        private Vector3 _gatherEndScaleValue;
-        protected Vector3 _initialScaleValue;
+        protected Vector3 InitialScaleValue;
+        protected int LastIndexTaken = 0;
 
         public ResourceType ResourceType => resourceType;
 
         protected virtual void Start()
         {
             resourceCounterManager.Initialize(resourceType);
-            _gatherEndScaleValue = resourcePiecesGroupObject.transform.localScale - new Vector3(0.15f, 0.15f, 0.15f);
-            _initialScaleValue = resourcePiecesGroupObject.transform.localScale;
+            InitialScaleValue = resourcePiecesGroupObject.transform.localScale;
+
+            _respawnStartScale = resourceType switch
+            {
+                ResourceType.Crystal or ResourceType.Stone => new Vector3(InitialScaleValue.x, 0f, InitialScaleValue.z),
+                ResourceType.Wood => Vector3.zero,
+                _ => _respawnStartScale
+            };
         }
 
         public void GetGathered(int count)
         {
             resourcePieces[LastIndexTaken++].SetActive(false);
-            _gatherTween?.Kill();
-            _gatherTween = resourcePiecesGroupObject.transform.DOScale(_gatherEndScaleValue, 0.1f).SetLoops(2, LoopType.Yoyo);
+            GatherTween?.Kill();
+            
+            PlayGatheredAnimation();
 
             for (var i = 0; i < count; i++)
             {
@@ -62,8 +72,6 @@ namespace Supplies
             _respawnResourceCoroutine = StartCoroutine(StartRespawnCoroutine());
         }
 
-        protected abstract void RespawnResource();
-
         private IEnumerator StartRespawnCoroutine()
         {
             yield return new WaitForSeconds(timeToRespawn);
@@ -72,12 +80,15 @@ namespace Supplies
 
         protected void ResetAllPieces()
         {
-            resourcePiecesGroupObject.transform.localScale = Vector3.zero;
+            resourcePiecesGroupObject.transform.localScale = _respawnStartScale;
 
             foreach (var piece in resourcePieces)
             {
                 piece.gameObject.SetActive(true);
             }
         }
+        
+        protected abstract void RespawnResource();
+        protected abstract void PlayGatheredAnimation();
     }
 }

@@ -18,6 +18,7 @@ namespace Supplies
         private float _randomRotationDuration;
 
         private Vector3 _endRotationVector;
+        private Vector3 _gatherEndScaleValue;
 
         private static readonly Vector3 EndValueRotatingOnRespawn = new (0, 360, 0);
 
@@ -30,6 +31,9 @@ namespace Supplies
             _randomRotationDuration = Random.Range(1.25f, 2.5f);
 
             _endRotationVector = new Vector3(_randomXRotation, 0f, _randomZRotation);
+            
+            _gatherEndScaleValue = resourcePiecesGroupObject.transform.localScale - new Vector3(0.15f, 0.15f, 0.15f);
+            
             StartWindEffect();
         }
 
@@ -45,10 +49,15 @@ namespace Supplies
 
             _rotateTweenSpawnEffect = resourcePiecesGroupObject.transform.DORotate(EndValueRotatingOnRespawn, durationRotationSpawn, RotateMode.FastBeyond360).OnComplete(StartWindEffect);
             
-            RespawnTween = resourcePiecesGroupObject.transform.DOScale(_initialScaleValue, respawnScaleInDuration).SetEase(Ease.OutBack).OnComplete(() =>
+            RespawnTween = resourcePiecesGroupObject.transform.DOScale(InitialScaleValue, respawnScaleInDuration).SetEase(Ease.OutBack).OnComplete(() =>
             {
                 resourceCollider.enabled = true;
             });
+        }
+
+        protected override void PlayGatheredAnimation()
+        {
+            GatherTween = resourcePiecesGroupObject.transform.DOScale(_gatherEndScaleValue, gatheredAnimationDuration).SetLoops(2, LoopType.Yoyo);
         }
 
         private void StartWindEffect()

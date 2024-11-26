@@ -531,8 +531,10 @@ MonoBehaviour:
   - {fileID: 6771687068621685721}
   resourcePiecesGroupObject: {fileID: 3427935697717299650}
   timeToRespawn: 6
-  respawnScaleInDuration: 0
+  respawnScaleInDuration: 0.4
   resourceCounterManager: {fileID: 6123145913186905175}
+  gatheredAnimationDuration: 0.1
+  shakeAnimationPower: 0.13
 --- !u!1 &7799611344256053103
 GameObject:
   m_ObjectHideFlags: 0

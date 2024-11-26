@@ -1,5 +1,4 @@
 ﻿using DG.Tweening;
-using Vector3 = UnityEngine.Vector3;
 
 namespace Supplies
 {
@@ -12,10 +11,15 @@ namespace Supplies
             
             RespawnTween?.Kill();
             
-            RespawnTween = resourcePiecesGroupObject.transform.DOScale(_initialScaleValue, 0.4f).OnComplete(() =>
+            RespawnTween = resourcePiecesGroupObject.transform.DOScale(InitialScaleValue, respawnScaleInDuration).SetEase(Ease.OutBack).OnComplete(() =>
             {
                 resourceCollider.enabled = true;
             });
+        }
+
+        protected override void PlayGatheredAnimation()
+        {
+            GatherTween = resourcePiecesGroupObject.transform.DOShakePosition(gatheredAnimationDuration, shakeAnimationPower);
         }
     }
 }
