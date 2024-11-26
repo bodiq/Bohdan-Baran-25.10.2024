@@ -39436,6 +39436,13 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 0.4
+    functionName: OnSwingStart
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 0.5
     functionName: OnEnableInstrumentCollider
     data: 
@@ -39450,7 +39457,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.73333335
+  - time: 0.7
     functionName: OnSwingEnd
     data: 
     objectReferenceParameter: {fileID: 0}

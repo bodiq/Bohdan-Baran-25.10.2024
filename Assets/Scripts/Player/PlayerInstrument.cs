@@ -14,6 +14,8 @@ namespace Player
         [SerializeField] private TrailRenderer trailRenderer;
 
         private const string ResourcesTag = "Resources";
+
+        private static readonly Vector3 EndScaleInstrument = new (1.3f, 1.3f, 1.3f);
         
         private void OnTriggerEnter(Collider other)
         {
@@ -29,7 +31,7 @@ namespace Player
 
         public void StartGather()
         {
-            transform.DOScale(Vector3.one, 0.5f);
+            transform.DOScale(EndScaleInstrument, 0.5f);
         }
 
         public void StopGather()
