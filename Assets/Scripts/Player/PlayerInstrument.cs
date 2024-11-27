@@ -1,6 +1,7 @@
 ﻿using System;
 using DG.Tweening;
 using Enums;
+using Managers;
 using Supplies;
 using UnityEngine;
 
@@ -25,6 +26,7 @@ namespace Player
                 if (resource)
                 {
                     resource.GetGathered(countForHit);
+                    UIManager.Instance.UIResourceIndicatorManager.ChangeResourceIndicatorAmount(resource.ResourceType, countForHit);
                 }
             }
         }

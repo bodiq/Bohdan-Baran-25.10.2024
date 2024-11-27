@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Configs;
 using Enums;
 using Managers;
 using ScriptableObjects;
@@ -25,6 +24,11 @@ namespace UI
                     UIResourceIndicators.Add(resource.Key, indicator);
                 }
             }
+        }
+
+        public void ChangeResourceIndicatorAmount(ResourceType resourceType, int addCount)
+        {
+            UIResourceIndicators[resourceType].ChangeResourceAmount(addCount);
         }
     }
 }

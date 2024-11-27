@@ -22,9 +22,9 @@ namespace UI
             _resourceType = resourceType;
         }
 
-        public void ChangeResourceAmount(int countToReduce)
+        public void ChangeResourceAmount(int countToAdd)
         {
-            _resourceCount -= countToReduce;
+            _resourceCount += countToAdd;
             resourceCountText.text = _resourceCount.ToString();
             GameManager.Instance.Player.PlayerResourceCount[_resourceType] = _resourceCount;
         }

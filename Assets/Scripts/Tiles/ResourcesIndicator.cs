@@ -16,8 +16,6 @@ namespace Tiles
         [SerializeField] private TextMeshProUGUI resourcesToGoText;
         [SerializeField] private Image resourceImage;
         [SerializeField] private ResourcesInformation resourcesInformation;
-
-        private UIResourceIndicator _uiResourceIndicator;
         
         private int _resourcesToEarn;
         private int _resourcesEarned = 0;
@@ -55,11 +53,6 @@ namespace Tiles
         private void Start()
         {
             _resourcesIndicatorManager = GetComponentInParent<ResourcesIndicatorManager>();
-            
-            if (UIManager.Instance.UIResourceIndicatorManager.UIResourceIndicators.TryGetValue(_resourceType, out var indicator))
-            {
-                _uiResourceIndicator = indicator;
-            }
         }
 
         public void Initialize(int countToEarn, ResourceType resourceType)
@@ -80,7 +73,7 @@ namespace Tiles
                 if (_remainderCount != 0)
                 {
                     _resourcesEarned += _remainderCount;
-                    _uiResourceIndicator.ChangeResourceAmount(_remainderCount);
+                    UIManager.Instance.UIResourceIndicatorManager.ChangeResourceIndicatorAmount(_resourceType, -_remainderCount);
                     if (_resourcesEarned >= _resourcesToEarn)
                     {
                         _isResourcesFull = true;
@@ -90,7 +83,7 @@ namespace Tiles
                 else
                 {
                     _resourcesEarned += _countToIncrease;
-                    _uiResourceIndicator.ChangeResourceAmount(_countToIncrease);
+                    UIManager.Instance.UIResourceIndicatorManager.ChangeResourceIndicatorAmount(_resourceType, -_countToIncrease);
                     if (_resourcesEarned >= _resourcesToEarn)
                     {
                         _isResourcesFull = true;
