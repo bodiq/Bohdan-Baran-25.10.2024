@@ -58,6 +58,7 @@ namespace Tiles
 
             _jumpTween = DOTween.Sequence()
                 .Append(transform.DOJump(firstEndPosition, resourceAnimationSettings.TileFillJumpPower, 1, resourceAnimationSettings.TileFillJumpDurationToFirstPos).SetEase(Ease.Linear))
+                .Join(transform.DORotate(_randomRotationAxisGathering * 360, resourceAnimationSettings.TileFillJumpDurationToFirstPos, RotateMode.LocalAxisAdd))
                 .Append(transform.DOMove(endPosition, resourceAnimationSettings.TileFillJumpDurationToSecondPos))
                 .OnComplete(() =>
                 {
