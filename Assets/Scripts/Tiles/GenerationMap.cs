@@ -107,7 +107,8 @@ namespace Tiles
                     tile.ResourcesIndicatorManager.Initialize();
 
                     var isResourcedTile = j == _lastIndexColumn || j == _firstIndexColumn;
-                    tile.SetSubTilePreSetup(tileType, isResourcedTile);
+                    var isRotated = j == _lastIndexColumn;
+                    tile.SetSubTilePreSetup(tileType, isResourcedTile, isRotated);
                     tile.SetIndicatorDependencies();
                 }
             }

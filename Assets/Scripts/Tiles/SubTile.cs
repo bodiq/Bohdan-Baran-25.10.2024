@@ -6,13 +6,20 @@ namespace Tiles
     public class SubTile : MonoBehaviour
     {
         [SerializeField] private TileTypes tileType;
-        [SerializeField] private GameObject resourcesObjects;
+        [SerializeField] private GameObject[] resourcesObjects;
 
         public TileTypes TileType => tileType;
 
-        public void ResourcedObjectsPreSetup()
+        public void ResourcedObjectsPreSetup(bool isRotated = false)
         {
-            resourcesObjects.SetActive(true);
+            var randomIndex = Random.Range(0, resourcesObjects.Length);
+            
+            if (isRotated)
+            {
+                resourcesObjects[randomIndex].transform.Rotate(0f, 180f, 0f);
+            }
+            
+            resourcesObjects[randomIndex].SetActive(true);
         }
     }
 }
