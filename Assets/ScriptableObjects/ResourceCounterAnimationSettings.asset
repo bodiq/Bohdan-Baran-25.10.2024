@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3dd83a0484140538bc3ff07543adbc9, type: 3}
+  m_Name: ResourceCounterAnimationSettings
+  m_EditorClassIdentifier: 
+  durationMoveAnimation: 0.4
+  durationScaleAnimation: 0.4
+  durationFadeInAnimation: 0.4
+  durationFadeOutAnimation: 0.4
+  delayBeforeDestroy: 0.2

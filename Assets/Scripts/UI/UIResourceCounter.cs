@@ -1,4 +1,5 @@
 using DG.Tweening;
+using ScriptableObjects;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,16 +9,17 @@ public class UIResourceCounter : MonoBehaviour
     [SerializeField] private TextMeshProUGUI resourceCountText;
     [SerializeField] private Image resourceIcon;
     [SerializeField] private CanvasGroup canvasGroup;
+    [SerializeField] private ResourceCounterAnimationSettings resourceCounterAnimationSettings;
 
     private Vector3 _initialPosition;
     private Vector3 _startAnimationPosition;
 
-    private static readonly float SpawnPosYOffset = 4f;
+    private static readonly float SpawnPosYOffset = 13f;
     
     public void Initialize(Sprite sprite)
     {
         resourceIcon.sprite = sprite;
-        _initialPosition = transform.position;
+        _initialPosition = transform.localPosition;
         _startAnimationPosition = new Vector3(_initialPosition.x, _initialPosition.y - SpawnPosYOffset, _initialPosition.z);
         SetStartPos();
     }
@@ -25,7 +27,7 @@ public class UIResourceCounter : MonoBehaviour
     private void SetStartPos()
     {
         gameObject.SetActive(false);
-        transform.position = _startAnimationPosition;
+        transform.localPosition = _startAnimationPosition;
         transform.localScale = Vector3.zero;
         canvasGroup.alpha = 0f;
     }
@@ -34,11 +36,11 @@ public class UIResourceCounter : MonoBehaviour
     {
         gameObject.SetActive(true);
         resourceCountText.text = "+" + count;
-        transform.DOMove(_initialPosition, 0.6f);
-        transform.DOScale(Vector3.one, 0.7f).SetEase(Ease.OutBack).OnComplete(() =>
+        transform.DOLocalMove(_initialPosition, resourceCounterAnimationSettings.DurationMoveAnimation).SetEase(Ease.OutQuint);
+        transform.DOScale(Vector3.one, resourceCounterAnimationSettings.DurationScaleAnimation).SetEase(Ease.OutBack).OnComplete(() =>
         {
-            canvasGroup.DOFade(0f, 0.4f).OnComplete(SetStartPos);
+            canvasGroup.DOFade(0f, resourceCounterAnimationSettings.DurationFadeOutAnimation).OnComplete(SetStartPos).SetDelay(resourceCounterAnimationSettings.DelayBeforeDestroy);
         });
-        canvasGroup.DOFade(1f, 0.4f);
+        canvasGroup.DOFade(1f, resourceCounterAnimationSettings.DurationFadeInAnimation);
     }
 }
