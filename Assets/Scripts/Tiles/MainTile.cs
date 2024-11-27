@@ -87,7 +87,7 @@ namespace Tiles
             _isReserved = true;
         }
 
-        public void SetSubTilePreSetup(TileTypes tileType, bool isResourcedTile = false)
+        public void SetSubTilePreSetup(TileTypes tileType, bool isResourcedTile = false, bool isRotated = false)
         {
             for (var i = 0; i < tiles.Length; i++)
             {
@@ -99,7 +99,7 @@ namespace Tiles
                     if (_isResourcedTile)
                     {
                         indicators.Clear();
-                        _subTileSelected.ResourcedObjectsPreSetup();
+                        _subTileSelected.ResourcedObjectsPreSetup(isRotated);
                     }
                     return;
                 }
