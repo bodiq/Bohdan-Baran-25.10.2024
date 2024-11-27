@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using Enums;
 using Managers;
@@ -25,10 +26,23 @@ namespace Player
                 var resource = other.GetComponent<Resource>();
                 if (resource)
                 {
-                    resource.GetGathered(countForHit);
-                    UIManager.Instance.UIResourceIndicatorManager.ChangeResourceIndicatorAmount(resource.ResourceType, countForHit);
+                    if (CanGather(resource.ResourceType))
+                    {
+                        resource.GetGathered(countForHit);
+                        UIManager.Instance.UIResourceIndicatorManager.ChangeResourceIndicatorAmount(resource.ResourceType, countForHit);
+                    }
                 }
             }
+        }
+        
+        public bool CanGather(ResourceType resourceType)
+        {
+            return instrument switch
+            {
+                Instruments.Axe => resourceType == ResourceType.Wood,
+                Instruments.Hammer => resourceType == ResourceType.Crystal || resourceType == ResourceType.Stone,
+                _ => false
+            };
         }
 
         public void StartGather()

@@ -13,12 +13,11 @@ MonoBehaviour:
   m_Name: ResourceAnimationSettings
   m_EditorClassIdentifier: 
   randomSpawnPositionRangeTileFill: {x: 0.5, y: 0.5, z: 0.5}
-  randomSpawnRotationRangeTileFill: {x: 0, y: 360, z: 0}
-  randomEndPositionFlyRangeTileFill: {x: 1.6, y: 0, z: 1.6}
-  tileFillJumpPower: 2.7
-  tileFillJumpDurationToFirstPos: 0.7
+  randomEndPositionFlyRangeTileFill: {x: 1.4, y: 0, z: 1.4}
+  tileFillJumpPower: 3
+  tileFillJumpDurationToFirstPos: 0.8
   tileFillJumpDurationToSecondPos: 0.15
-  tileFillEndPositionHeightOffset: 0.2
+  tileFillEndPositionHeightOffset: 1
   gatheringJumpPower: 2
   gatheringJumpDuration: 0.7
   gatheringMoveToPlayerDuration: 0.2

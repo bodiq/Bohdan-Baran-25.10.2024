@@ -41,13 +41,10 @@ namespace Tiles
 
         private void InitializeTileFillingOffsets()
         {
-            var randomYOffsetRotation = Random.Range(0, resourceAnimationSettings.RandomSpawnRotationRangeTileFill.y);
-
             _randomPositionOffsetTileFill = ConfigHelper.GenerateRandomVector(resourceAnimationSettings.RandomSpawnPositionRangeTileFill);
             _randomEndPositionOffsetTileFill = ConfigHelper.GenerateRandomVector(resourceAnimationSettings.RandomEndPositionFlyRangeTileFill);
             
             _randomEndPositionOffsetTileFill.y = resourceAnimationSettings.TileFillEndPositionHeightOffset;
-            transform.rotation = Quaternion.Euler(0f, randomYOffsetRotation, 0f);
         }
         
         public void AnimateResourceForTileFilling(Vector3 startPosition, Vector3 endPosition, ResourcesIndicator resourcesIndicator, int count, int remainder = 0)

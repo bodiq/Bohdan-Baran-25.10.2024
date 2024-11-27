@@ -7,7 +7,6 @@ namespace ScriptableObjects
     {
         [Header("Tile Fill Settings")]
         [SerializeField] private Vector3 randomSpawnPositionRangeTileFill = new(0.5f, 0.5f, 0.5f);
-        [SerializeField] private Vector3 randomSpawnRotationRangeTileFill = new(0, 360, 0);
         [SerializeField] private Vector3 randomEndPositionFlyRangeTileFill = new(1.4f, 0f, 1.4f);
         [SerializeField] private float tileFillJumpPower = 2.5f;
 
@@ -23,7 +22,6 @@ namespace ScriptableObjects
 
 
         public Vector3 RandomSpawnPositionRangeTileFill => randomSpawnPositionRangeTileFill;
-        public Vector3 RandomSpawnRotationRangeTileFill => randomSpawnRotationRangeTileFill;
         public Vector3 RandomEndPositionFlyRangeTileFill => randomEndPositionFlyRangeTileFill;
         public float TileFillJumpPower => tileFillJumpPower;
 
