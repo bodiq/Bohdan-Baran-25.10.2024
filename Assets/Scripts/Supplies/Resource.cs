@@ -4,6 +4,7 @@ using DG.Tweening;
 using Enums;
 using Managers;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Supplies
 {
@@ -18,6 +19,8 @@ namespace Supplies
         [SerializeField] protected UIResourceCounterManager resourceCounterManager;
         [SerializeField] protected float gatheredAnimationDuration;
         [SerializeField] protected float shakeAnimationPower;
+        [SerializeField] private ParticleSystem gatheringParticle;
+        [SerializeField] private ParticleSystem destroyParticle;
         
         private Coroutine _respawnResourceCoroutine;
         private Vector3 _respawnStartScale;
@@ -48,6 +51,7 @@ namespace Supplies
             GatherTween?.Kill();
             
             PlayGatheredAnimation();
+            gatheringParticle.Play();
 
             for (var i = 0; i < count; i++)
             {
@@ -60,6 +64,10 @@ namespace Supplies
 
             if (LastIndexTaken == resourcePieces.Length - 1)
             {
+                if (destroyParticle)
+                {
+                    destroyParticle.Play();
+                }
                 GameManager.Instance.Player.PlayerGather.TryRemoveResource(gameObject);
                 resourceCollider.enabled = false;
             }

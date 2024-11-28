@@ -14,28 +14,34 @@ namespace Player
         [SerializeField] private BoxCollider boxCollider;
         [SerializeField] private int countForHit = 2;
         [SerializeField] private TrailRenderer trailRenderer;
+        [SerializeField] private float animationScaleInOut = 0.3f;
 
         private const string ResourcesTag = "Resources";
 
         private static readonly Vector3 EndScaleInstrument = new (1.3f, 1.3f, 1.3f);
-        
+        private static readonly Vector3 StartScaleInstrument = Vector3.zero;
+
+        private Tween _instrumentScaleTween;
+
         private void OnTriggerEnter(Collider other)
         {
-            if (other.CompareTag(ResourcesTag))
+            if (!other.CompareTag(ResourcesTag)) return;
+
+            if (!other.TryGetComponent<Resource>(out var resource)) return;
+
+            if (CanGather(resource.ResourceType))
             {
-                var resource = other.GetComponent<Resource>();
-                if (resource)
-                {
-                    if (CanGather(resource.ResourceType))
-                    {
-                        resource.GetGathered(countForHit);
-                        UIManager.Instance.UIResourceIndicatorManager.ChangeResourceIndicatorAmount(resource.ResourceType, countForHit);
-                    }
-                }
+                GatherResource(resource);
             }
         }
         
-        public bool CanGather(ResourceType resourceType)
+        private void GatherResource(Resource resource)
+        {
+            resource.GetGathered(countForHit);
+            UIManager.Instance.UIResourceIndicatorManager.ChangeResourceIndicatorAmount(resource.ResourceType, countForHit);
+        }
+        
+        private bool CanGather(ResourceType resourceType)
         {
             return instrument switch
             {
@@ -47,14 +53,19 @@ namespace Player
 
         public void StartGather()
         {
-            transform.DOScale(EndScaleInstrument, 0.5f);
+            PlayScaleAnimation(EndScaleInstrument);
         }
 
         public void StopGather()
         {
-            transform.DOScale(Vector3.zero, 0.5f);
+            PlayScaleAnimation(StartScaleInstrument);
         }
 
+        private void PlayScaleAnimation(Vector3 targetScale)
+        {
+            _instrumentScaleTween?.Kill();
+            _instrumentScaleTween = transform.DOScale(targetScale, animationScaleInOut);
+        }
         public void TurnCollider(bool isActive)
         {
             boxCollider.enabled = isActive;

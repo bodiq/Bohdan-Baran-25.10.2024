@@ -197,6 +197,7 @@ MonoBehaviour:
   boxCollider: {fileID: 3148307421523906638}
   countForHit: 2
   trailRenderer: {fileID: 8090974300681079772}
+  animationScaleInOut: 0.3
 --- !u!65 &3148307421523906638
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -216,8 +217,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 0
   serializedVersion: 3
-  m_Size: {x: 0.5, y: 2.25, z: 1.2}
-  m_Center: {x: 0, y: 0.8, z: -0.2}
+  m_Size: {x: 0.39, y: 2.25, z: 1.02}
+  m_Center: {x: 0, y: 0.75, z: -0.2}
 --- !u!54 &2187155830917436426
 Rigidbody:
   m_ObjectHideFlags: 0
