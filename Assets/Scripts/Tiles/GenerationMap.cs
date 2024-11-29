@@ -17,10 +17,9 @@ namespace Tiles
         [SerializeField] private float maxHeightDifference = 0.5f;
     
         private static readonly float VerticalDistance = 0.75f;
-        private static readonly float CoefficientPlacement = 0.866f;
-        private static readonly float TileXOffsetOddRow = 0.25f;
-        private static readonly float HalfUnit = 0.5f;
-    
+        private static readonly float CoefficientPlacement = Mathf.Sqrt(3) / 2;
+        private static readonly float TileXOffsetOddRow = Mathf.Sqrt(3) / 4;
+
         private int _lastIndexColumn;
         private int _firstIndexColumn = 0;
     
@@ -40,7 +39,7 @@ namespace Tiles
                     
                     if (i % 2 == 1)
                     {
-                        xOffset += tileSize * HalfUnit - TileXOffsetOddRow;
+                        xOffset += tileSize * TileXOffsetOddRow;
                     }
                     
                     var height = Random.Range(minHeight, maxHeight);

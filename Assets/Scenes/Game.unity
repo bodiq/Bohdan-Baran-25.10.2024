@@ -580,7 +580,7 @@ MonoBehaviour:
     type: 3}
   columnsMap: 5
   rowsMap: 6
-  tileSize: 4
+  tileSize: 4.8
   maxHeight: 1
   minHeight: 0
   maxHeightDifference: 0.5

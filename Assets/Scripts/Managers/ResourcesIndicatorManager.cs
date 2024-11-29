@@ -72,6 +72,19 @@ namespace Managers
             return true;
         }
 
+        public bool CheckIfResourceAreFull()
+        {
+            foreach (var indicator in ActiveResourceIndicators)
+            {
+                if (!indicator.Value.IsResourcesFull)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         private ResourceType GetRandomResourceType(List<ResourceType> resourceTypes)
         {
             var randomIndex = Random.Range(0, resourceTypes.Count);
