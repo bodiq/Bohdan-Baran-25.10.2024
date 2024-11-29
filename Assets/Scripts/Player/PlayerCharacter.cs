@@ -41,7 +41,7 @@ namespace Player
         {
             foreach (var type in resourcesInformation.ListResourceTypes)
             {
-                PlayerResourceCount[type] = Random.Range(1000, 5000);
+                PlayerResourceCount[type] = Random.Range(4000, 6000);
             }
         }
 

@@ -53,12 +53,18 @@ namespace Player
 
         public void StartGather()
         {
-            PlayScaleAnimation(EndScaleInstrument);
+            if (transform.localScale != EndScaleInstrument)
+            {
+                PlayScaleAnimation(EndScaleInstrument);
+            }
         }
 
         public void StopGather()
         {
-            PlayScaleAnimation(StartScaleInstrument);
+            if (transform.localScale != StartScaleInstrument)
+            {
+                PlayScaleAnimation(StartScaleInstrument);
+            }
         }
 
         private void PlayScaleAnimation(Vector3 targetScale)
